@@ -10,6 +10,7 @@ public abstract class AbstractBooking {
         this.startTime = startTime;
         this.endDate = endDate;
         this.endTime = endTime;
+        //Start time has to be before end time etc
     }
 
     private int roomNumber;
