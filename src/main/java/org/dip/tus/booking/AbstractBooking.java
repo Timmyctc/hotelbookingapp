@@ -1,4 +1,4 @@
-package org.dip.tus;
+package org.dip.tus.booking;
 
 import java.sql.Time;
 import java.util.Date;

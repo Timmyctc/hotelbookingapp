@@ -1,4 +1,4 @@
-package org.dip.tus;
+package org.dip.tus.runner;
 
 public class Main {
     public static void main(String[] args) {
