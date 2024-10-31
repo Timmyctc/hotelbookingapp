@@ -2,16 +2,15 @@ package org.dip.tus.booking;
 
 import org.dip.tus.Customer;
 
-import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class RoomBooking extends AbstractBooking {
 
-    private Customer customer;
+    private LocalDateTime bookingDateTimeEnd;
 
-    public RoomBooking(Customer customer, Date startDate, Time startTime, Date endDate, Time endTime, int roomNumber) {
-        super(startDate, startTime, endDate, endTime, roomNumber);
-        this.customer = customer;
+    public RoomBooking(Customer customer, int roomNumber, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        super(customer,roomNumber,startDateTime);
+        this.bookingDateTimeEnd = endDateTime;
     }
 
 }

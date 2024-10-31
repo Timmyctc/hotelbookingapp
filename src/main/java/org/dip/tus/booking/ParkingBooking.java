@@ -4,23 +4,26 @@ import org.dip.tus.Customer;
 import org.dip.tus.parking.ParkingLotManager;
 import org.dip.tus.parking.ParkingSpot;
 
-import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class ParkingBooking extends AbstractBooking {
 
     private Customer customer;
     private String registration;
+    private LocalDateTime bookingDateTimeEnd;
     private ParkingLotManager parkingLotManager = ParkingLotManager.getInstance();
+    private ParkingSpot allocatedSpot;
 
-    public ParkingBooking(Customer customer, String registration, Date startDate, Time startTime, Date endDate, Time endTime, int roomNumber) {
-        super(startDate, startTime, endDate, endTime, roomNumber);
-        this.customer = customer;
+    public ParkingBooking(Customer customer,int roomNumber, LocalDateTime startDateTime, LocalDateTime endDateTime, String registration) {
+        super(customer, roomNumber, startDateTime);
         this.registration = registration;
+        this.bookingDateTimeEnd = endDateTime;
+        this.allocatedSpot = getAvailableParkingSpotForDateTime(startDateTime,endDateTime);
     }
 
-    public ParkingSpot getAvailableParkingSpot (ParkingBooking parkingBooking) {
-        return parkingLotManager.getAvailableSpot();
+    public ParkingSpot getAvailableParkingSpotForDateTime (LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        return parkingLotManager.getAvailableParkingSpotForDateTime(startDateTime,endDateTime);
     }
 
 }
+

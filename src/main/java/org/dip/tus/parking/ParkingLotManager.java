@@ -2,6 +2,8 @@ package org.dip.tus.parking;
 
 import org.dip.tus.booking.ParkingBooking;
 
+import java.time.LocalDateTime;
+
 public class ParkingLotManager {
 
     private static final ParkingLotManager instance = new ParkingLotManager();
@@ -17,7 +19,7 @@ public class ParkingLotManager {
         return null;
     }
 
-    public ParkingSpot getAvailableParkingSpotForParkingBooking(ParkingBooking parkingBooking) {
+    public ParkingSpot getAvailableParkingSpotForDateTime(LocalDateTime startTime, LocalDateTime endTime) {
 //        Stream.findAny()
         return null;
     }
