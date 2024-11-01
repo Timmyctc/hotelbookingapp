@@ -13,4 +13,8 @@ public class RoomBooking extends AbstractBooking {
         this.bookingDateTimeEnd = endDateTime;
     }
 
+    @Override
+    public String generateBookingID() {
+        return "";
+    }
 }

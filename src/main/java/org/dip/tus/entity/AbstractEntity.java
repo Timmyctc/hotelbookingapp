@@ -1,7 +1,6 @@
-package org.dip.tus.entities;
+package org.dip.tus.entity;
 
 import org.dip.tus.booking.AbstractBooking;
-import org.dip.tus.booking.ParkingBooking;
 
 import java.util.PriorityQueue;
 

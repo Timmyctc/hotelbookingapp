@@ -1,6 +1,6 @@
 package org.dip.tus.manager;
 
-import org.dip.tus.entities.ParkingSpot;
+import org.dip.tus.entity.ParkingSpot;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

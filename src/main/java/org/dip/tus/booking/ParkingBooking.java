@@ -2,7 +2,7 @@ package org.dip.tus.booking;
 
 import org.dip.tus.Customer;
 import org.dip.tus.manager.ParkingLotManager;
-import org.dip.tus.entities.ParkingSpot;
+import org.dip.tus.entity.ParkingSpot;
 
 import java.time.LocalDateTime;
 
