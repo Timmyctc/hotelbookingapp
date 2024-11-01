@@ -29,7 +29,10 @@ public abstract class AbstractBooking {
     public String getBookingID() {
         return bookingID;
     }
+
     public LocalDateTime getBookingDateTimeStart() {
         return bookingDateTimeStart;
     }
+
+    public abstract String generateBookingID();
 }

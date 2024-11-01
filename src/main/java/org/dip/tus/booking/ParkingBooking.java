@@ -28,17 +28,11 @@ public class ParkingBooking extends AbstractBooking {
         return bookingDateTimeEnd;
     }
 
-    public LocalDateTime getBookingDateTimeStart() {
-        return super.getBookingDateTimeStart();
-    }
-
-    public Customer getParkingBookingAssociatedCustomer() {
-        return super.getCustomer();
+    public String generateBookingID() {
+        return new StringBuilder()
+                .append("P")
+                .append(getCustomer().hashCode() + getRoomNumber() + getBookingDateTimeStart().hashCode())
+                .toString();
     }
 }
-//    @Override
-//    public void generateBookingID() {
-//        super.
-//    }
-//}
 

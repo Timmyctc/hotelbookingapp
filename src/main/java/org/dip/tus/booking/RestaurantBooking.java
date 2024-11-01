@@ -16,4 +16,9 @@ public class RestaurantBooking extends  AbstractBooking {
         if(mealEnum.equals(MealEnum.BREAKFAST)) //Check is the time before 11, if lunch check is it after 11 and before 5 if dinner after 5 before 10
 
     }
+
+    @Override
+    public String generateBookingID() {
+        return "";
+    }
 }
