@@ -11,7 +11,6 @@ public class ParkingSpot {
 
     private char section;
     private int spotNumber;
-    private boolean isOccupied;
     private PriorityQueue<ParkingBooking> bookings;
 
     public ParkingSpot(char section, int spotNumber) {
@@ -19,13 +18,15 @@ public class ParkingSpot {
         else {throw new IllegalArgumentException("Invalid Section");}
         if(spotNumber <= 1 || spotNumber >= 20) {this.spotNumber = spotNumber;}
         else throw new IllegalArgumentException("Invalid Parking Spot Number");
-        this.bookings = new PriorityQueue<>(Comparator.comparing(ParkingBooking::getBookingDateTimeStart);
+        this.bookings = new PriorityQueue<>(Comparator.comparing(ParkingBooking::getBookingDateTimeStart));
     }
 
-    public ParkingBooking getNextBooking() {
-        return bookings.peek();
-    }
-
+    /**
+     * Retrieves the next booking in the PriorityQueue and checks for a clash between its
+     * start & end times, and the current time (LocalDateTime.now())
+     *
+     * @return boolean on whether the spot is currently booked based on the above criteria.
+     */
     public boolean isSpotOccupied() {
         ParkingBooking nextBooking = getNextBooking();
         if(Objects.nonNull(nextBooking)) {
@@ -35,7 +36,41 @@ public class ParkingSpot {
         return false;
     }
 
-    public void setSpotOccupiedStatus(boolean isSpotOccupied) {
-        this.isOccupied = isSpotOccupied;
+    /**
+     * Streams through the bookings PriorityQueue and checks for any match where the new prospective booking
+     * may overlap with any existing bookings.
+     *
+     * @param newBooking - Prospective booking to be checked against existing booking Queue
+     * @return boolean if there is a clash between newBooking and the existing booking Queue
+     */
+    public boolean doesBookingClash(ParkingBooking newBooking) {
+        return bookings
+                .stream()
+                .anyMatch(b -> newBooking.getBookingDateTimeStart().isBefore(b.getBookingDateTimeEnd()) &&
+                newBooking.getBookingDateTimeEnd().isAfter(b.getBookingDateTimeStart()));
+    }
+
+    /**
+     *
+     * @return next booking in the PriorityQueue, as each booking added to the queue is compared based on its startTime
+     * we can be sure next booking will be the next chronologically.
+     */
+    public ParkingBooking getNextBooking() {
+        return bookings.peek();
+    }
+
+    /**
+     * Adds new booking to bookings PriorityQueue, because we've defined the Comparator
+     * in the ParkingSpot constructor it will automatically use this as comparison when adding new bookings
+     *
+     * @param newBooking newBooking to add to bookings Queue.
+     * @return true on successfully adding booking, false on a clash
+     */
+    public boolean addBookingToQueue(ParkingBooking newBooking) {
+        if(!doesBookingClash(newBooking)) {
+            bookings.add(newBooking);
+            return true;
+        }
+        return false;
     }
 }
