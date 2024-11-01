@@ -1,5 +1,6 @@
-package org.dip.tus.parking;
+package org.dip.tus.entities;
 
+import org.dip.tus.booking.AbstractBooking;
 import org.dip.tus.booking.ParkingBooking;
 
 import java.time.LocalDateTime;
@@ -7,7 +8,7 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.PriorityQueue;
 
-public class ParkingSpot {
+public class ParkingSpot extends AbstractEntity<ParkingBooking> {
 
     private char section;
     private int spotNumber;
@@ -27,7 +28,7 @@ public class ParkingSpot {
      *
      * @return boolean on whether the spot is currently booked based on the above criteria.
      */
-    public boolean isSpotOccupied() {
+    public boolean isOccupied() {
         ParkingBooking nextBooking = getNextBooking();
         if(Objects.nonNull(nextBooking)) {
             return LocalDateTime.now().isAfter(nextBooking.getBookingDateTimeStart())

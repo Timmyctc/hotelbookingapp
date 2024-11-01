@@ -11,7 +11,7 @@ public abstract class AbstractBooking {
     private LocalDateTime bookingDateTimeStart;
     private String bookingID;
 
-    public AbstractBooking(Customer customer, int roomNumber, LocalDateTime bookingDateTimeStart, String bookingID) {
+    public AbstractBooking(Customer customer, int roomNumber, LocalDateTime bookingDateTimeStart) {
         this.customer = customer;
         this.roomNumber = roomNumber;
         this.bookingDateTimeStart = bookingDateTimeStart;

@@ -1,10 +1,9 @@
-package org.dip.tus.parking;
+package org.dip.tus.manager;
 
-import org.dip.tus.booking.ParkingBooking;
+import org.dip.tus.entities.ParkingSpot;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class ParkingLotManager {
 
