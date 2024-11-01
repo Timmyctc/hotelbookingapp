@@ -11,12 +11,10 @@ public abstract class AbstractBooking {
     private LocalDateTime bookingDateTimeStart;
     private String bookingID;
 
-    public AbstractBooking(Customer customer, int roomNumber, LocalDateTime bookingDateTimeStart) {
+    public AbstractBooking(Customer customer, int roomNumber, LocalDateTime bookingDateTimeStart, String bookingID) {
         this.customer = customer;
         this.roomNumber = roomNumber;
         this.bookingDateTimeStart = bookingDateTimeStart;
-//        this.bookingID = "B" + String.valueOf(Math.abs(customer.hashCode() + roomNumber + bookingDateTimeStart.hashCode()));
-//        System.out.println(bookingID);
     }
 
     public Customer getCustomer() {
@@ -30,5 +28,8 @@ public abstract class AbstractBooking {
     }
     public String getBookingID() {
         return bookingID;
+    }
+    public LocalDateTime getBookingDateTimeStart() {
+        return bookingDateTimeStart;
     }
 }

@@ -12,18 +12,33 @@ public class ParkingBooking extends AbstractBooking {
     private String registration;
     private LocalDateTime bookingDateTimeEnd;
     private ParkingLotManager parkingLotManager = ParkingLotManager.getInstance();
-    private ParkingSpot allocatedSpot;
 
-    public ParkingBooking(Customer customer,int roomNumber, LocalDateTime startDateTime, LocalDateTime endDateTime, String registration) {
-        super(customer, roomNumber, startDateTime);
+    public ParkingBooking(Customer customer, int roomNumber, LocalDateTime startDateTime,
+                          LocalDateTime endDateTime, String registration, String bookingID) {
+        super(customer, roomNumber, startDateTime, bookingID);
         this.registration = registration;
         this.bookingDateTimeEnd = endDateTime;
-        this.allocatedSpot = getAvailableParkingSpotForDateTime(startDateTime,endDateTime);
     }
 
-    public ParkingSpot getAvailableParkingSpotForDateTime (LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        return parkingLotManager.getAvailableParkingSpotForDateTime(startDateTime,endDateTime);
+    public ParkingSpot getAvailableParkingSpotForDateTime(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        return parkingLotManager.getAvailableParkingSpotForDateTime(startDateTime, endDateTime);
     }
 
+    public LocalDateTime getBookingDateTimeEnd() {
+        return bookingDateTimeEnd;
+    }
+
+    public LocalDateTime getBookingDateTimeStart() {
+        return super.getBookingDateTimeStart();
+    }
+
+    public Customer getParkingBookingAssociatedCustomer() {
+        return super.getCustomer();
+    }
 }
+//    @Override
+//    public void generateBookingID() {
+//        super.
+//    }
+//}
 
