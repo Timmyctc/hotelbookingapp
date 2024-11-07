@@ -3,9 +3,7 @@ package org.dip.tus.booking;
 import org.dip.tus.Customer;
 import org.dip.tus.MealEnum;
 
-import java.sql.Time;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class RestaurantBooking extends  AbstractBooking {
 

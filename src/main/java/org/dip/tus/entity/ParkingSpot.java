@@ -27,6 +27,7 @@ public class ParkingSpot extends AbstractEntity<ParkingBooking> {
      *
      * @return boolean on whether the spot is currently booked based on the above criteria.
      */
+    @Override
     public boolean isOccupied() {
         ParkingBooking nextBooking = getNextBooking();
         if(Objects.nonNull(nextBooking)) {
@@ -43,6 +44,7 @@ public class ParkingSpot extends AbstractEntity<ParkingBooking> {
      * @param newBooking - Prospective booking to be checked against existing booking Queue
      * @return boolean if there is a clash between newBooking and the existing booking Queue
      */
+    @Override
     public boolean doesBookingClash(ParkingBooking newBooking) {
         return bookings
                 .stream()
@@ -55,6 +57,7 @@ public class ParkingSpot extends AbstractEntity<ParkingBooking> {
      * @return next booking in the PriorityQueue, as each booking added to the queue is compared based on its startTime
      * we can be sure next booking will be the next chronologically.
      */
+    @Override
     public ParkingBooking getNextBooking() {
         return bookings.peek();
     }

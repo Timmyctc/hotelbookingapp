@@ -1,5 +1,6 @@
 package org.dip.tus.manager;
 
+import org.dip.tus.booking.ParkingBooking;
 import org.dip.tus.entity.ParkingSpot;
 
 import java.time.LocalDateTime;
@@ -17,12 +18,14 @@ public class ParkingLotManager {
     public ParkingSpot getCurrentAvailableParkingSpot() {
         return parkingSpotList
                 .stream()
-                .filter(p -> !p.isSpotOccupied())
-                .filter(p -> p.)
+                .filter(p -> !p.isOccupied())
+                .findFirst().orElse(null);
     }
 
-    public ParkingSpot getAvailableParkingSpotForDateTime(LocalDateTime startTime, LocalDateTime endTime) {
-//        Stream.findAny()
-        return null;
+    public ParkingSpot getAvailableParkingSpotForDateTime(ParkingBooking parkingBooking) {
+        return parkingSpotList
+                .stream()
+                .filter(p -> !p.doesBookingClash(parkingBooking))
+                .findFirst().orElse(null);
     }
 }

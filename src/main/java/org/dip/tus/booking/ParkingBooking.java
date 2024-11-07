@@ -22,7 +22,7 @@ public class ParkingBooking extends AbstractBooking {
     }
 
     public ParkingSpot getAvailableParkingSpotForDateTime(LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        return parkingLotManager.getAvailableParkingSpotForDateTime(startDateTime, endDateTime);
+        return parkingLotManager.getAvailableParkingSpotForDateTime(this);
     }
 
     public LocalDateTime getBookingDateTimeEnd() {
