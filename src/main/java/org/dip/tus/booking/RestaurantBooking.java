@@ -23,14 +23,14 @@ public class RestaurantBooking extends  AbstractBooking {
     @Override
     public String generateBookingID() {
         String prefix;
-        switch (getMealTypeFromBookingInfo()) {
-            case Breakfast:
-                break;
-            case Lunch:
-                break;
-            case Dinner:
-                break;
-            default:
+//        switch (getMealTypeFromBookingInfo()) {
+//            case Breakfast:
+//                break;
+//            case Lunch:
+//                break;
+//            case Dinner:
+//                break;
+//            default:
 
         return new StringBuilder().append();
     }

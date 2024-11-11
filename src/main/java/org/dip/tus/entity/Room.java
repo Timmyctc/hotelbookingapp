@@ -15,7 +15,7 @@ public class Room extends AbstractEntity<RoomBooking>  {
     }
 
     @Override
-    public AbstractBooking getNextBooking() {
+    public RoomBooking getNextBooking() {
         return null;
     }
 }

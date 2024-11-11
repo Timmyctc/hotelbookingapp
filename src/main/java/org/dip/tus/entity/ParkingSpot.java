@@ -53,16 +53,6 @@ public class ParkingSpot extends AbstractEntity<ParkingBooking> {
     }
 
     /**
-     *
-     * @return next booking in the PriorityQueue, as each booking added to the queue is compared based on its startTime
-     * we can be sure next booking will be the next chronologically.
-     */
-    @Override
-    public ParkingBooking getNextBooking() {
-        return bookings.peek();
-    }
-
-    /**
      * Adds new booking to bookings PriorityQueue, because we've defined the Comparator
      * in the ParkingSpot constructor it will automatically use this as comparison when adding new bookings
      *
