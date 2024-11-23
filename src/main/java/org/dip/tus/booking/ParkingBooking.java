@@ -6,11 +6,11 @@ import org.dip.tus.entity.ParkingSpot;
 
 import java.time.LocalDateTime;
 
-public class ParkingBooking extends AbstractBooking {
+public final class ParkingBooking extends AbstractBooking {
 
     private String registration;
     private LocalDateTime bookingDateTimeEnd;
-    private ParkingLotManager parkingLotManager = ParkingLotManager.getInstance();
+    private ParkingLotManager parkingLotManager; //Dependency Injection
     private String parkingBookingID;
 
     public ParkingBooking(Customer customer, int roomNumber, LocalDateTime startDateTime,
@@ -35,6 +35,10 @@ public class ParkingBooking extends AbstractBooking {
                 .append("P")
                 .append(getCustomer().hashCode() + getRoomNumber() + getBookingDateTimeStart().hashCode())
                 .toString();
+    }
+    @Override
+    public boolean doesBookingClash() {
+        return false;
     }
 }
 

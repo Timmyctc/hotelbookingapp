@@ -4,7 +4,7 @@ import org.dip.tus.Customer;
 
 import java.time.LocalDateTime;
 
-public abstract class AbstractBooking {
+public sealed abstract class AbstractBooking permits ParkingBooking, RestaurantBooking, RoomBooking{
 
     private int roomNumber;
     private Customer customer;
@@ -35,4 +35,5 @@ public abstract class AbstractBooking {
     }
 
     public abstract String generateBookingID();
+    public abstract boolean doesBookingClash();
 }

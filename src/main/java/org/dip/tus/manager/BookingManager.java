@@ -1,7 +1,10 @@
 package org.dip.tus.manager;
 
-public interface BookingManager <T> {
+import org.dip.tus.booking.AbstractBooking;
+
+public interface BookingManager <T extends AbstractBooking> {
     boolean addBooking(T booking);
     boolean removeBooking(T booking);
+    T getNextBooking();
 
 }

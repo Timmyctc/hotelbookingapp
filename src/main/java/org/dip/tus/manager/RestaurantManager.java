@@ -1,16 +1,20 @@
 package org.dip.tus.manager;
 
-import org.dip.tus.booking.TableBooking;
-import org.dip.tus.entity.Table;
+import org.dip.tus.booking.RestaurantBooking;
 
-public class RestaurantManager implements BookingManager<TableBooking> {
+public class RestaurantManager implements BookingManager<RestaurantBooking> {
     @Override
-    public boolean addBooking(TableBooking booking) {
+    public boolean addBooking(RestaurantBooking booking) {
         return false;
     }
 
     @Override
-    public boolean removeBooking(TableBooking booking) {
+    public boolean removeBooking(RestaurantBooking booking) {
         return false;
+    }
+
+    @Override
+    public RestaurantBooking getNextBooking() {
+        return null;
     }
 }
