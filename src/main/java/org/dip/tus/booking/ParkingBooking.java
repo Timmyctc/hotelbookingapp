@@ -11,11 +11,12 @@ public final class ParkingBooking extends AbstractBooking {
     private String registration;
     private LocalDateTime bookingDateTimeEnd;
     private ParkingLotManager parkingLotManager; //Dependency Injection
+    private ParkingLotManager parkingLotManager = ParkingLotManager.getInstance();
     private String parkingBookingID;
 
     public ParkingBooking(Customer customer, int roomNumber, LocalDateTime startDateTime,
-                          LocalDateTime endDateTime, String registration) {
-        super(customer, roomNumber, startDateTime);
+                          LocalDateTime endDateTime, String registration, ) {
+        super(customer, roomNumber, startDateTime, endDateTime);
         this.registration = registration;
         this.bookingDateTimeEnd = endDateTime;
         this.parkingBookingID = generateBookingID();

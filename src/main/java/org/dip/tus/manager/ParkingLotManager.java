@@ -22,7 +22,7 @@ public class ParkingLotManager implements BookingManager<ParkingSpot>{
     public ParkingSpot getCurrentAvailableParkingSpot() {
         return parkingSpotList
                 .stream()
-                .filter(p -> !p.isOccupied())
+                .filter(p -> !p.isOccupied(LocalDateTime.now()))
                 .findFirst().orElse(null);
     }
 
