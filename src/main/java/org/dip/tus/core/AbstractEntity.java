@@ -1,6 +1,4 @@
-package org.dip.tus.entity;
-
-import org.dip.tus.booking.AbstractBooking;
+package org.dip.tus.core;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -9,7 +7,16 @@ import java.util.PriorityQueue;
 public abstract class AbstractEntity<T extends AbstractBooking> {
 
     protected PriorityQueue<T> bookings;
-    public abstract boolean doesBookingClash(T booking);
+
+    public abstract String getId();
+
+    public boolean doesBookingClash(T booking) {
+        if(bookings.isEmpty()) {return false;}
+        return bookings
+                .stream()
+                .anyMatch(b -> booking.getBookingDateTimeStart().isBefore(b.getBookingDateTimeEnd()) &&
+                        booking.getBookingDateTimeEnd().isAfter(b.getBookingDateTimeStart()));
+    }
 
     /**
      * Adds new booking to bookings PriorityQueue, because we've defined the Comparator
@@ -25,7 +32,6 @@ public abstract class AbstractEntity<T extends AbstractBooking> {
         }
         return false;
     }
-
 
     /**
      * Removes booking from PriorityQueue if it exists

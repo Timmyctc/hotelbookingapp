@@ -1,4 +1,4 @@
-package org.dip.tus;
+package org.dip.tus.restaurant;
 
 public enum MealEnum {
     BREAKFAST,

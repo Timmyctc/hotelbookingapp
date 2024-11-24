@@ -1,8 +1,7 @@
-package org.dip.tus.entity;
+package org.dip.tus.parking;
 
-import org.dip.tus.booking.ParkingBooking;
+import org.dip.tus.core.AbstractEntity;
 
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.PriorityQueue;
@@ -19,6 +18,12 @@ public class ParkingSpot extends AbstractEntity<ParkingBooking> {
         else throw new IllegalArgumentException("Invalid Parking Spot Number");
         this.bookings = new PriorityQueue<>(Comparator.comparing(ParkingBooking::getBookingDateTimeStart));
     }
+
+    @Override
+    public String getId() {
+        return "";
+    }
+
     /**
      * Streams through the bookings PriorityQueue and checks for any match where the new prospective booking
      * may overlap with any existing bookings.

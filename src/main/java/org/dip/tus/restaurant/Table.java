@@ -1,33 +1,32 @@
-package org.dip.tus.entity;
+package org.dip.tus.restaurant;
 
-import org.dip.tus.booking.RestaurantBooking;
+import org.dip.tus.core.AbstractEntity;
 
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.PriorityQueue;
 
 public class Table extends AbstractEntity<RestaurantBooking> {
 
-    private int tableNumber;
+    private final int tableNumber;
+    private int seats;
 
-    public Table(int tableNumber) {
+    public Table(int tableNumber, int seats) {
         if (tableNumber < 1 || tableNumber > 100) { // Example: Validate table number range
             throw new IllegalArgumentException("Invalid Table Number");
         }
         this.tableNumber = tableNumber;
+        this.seats = seats;
         this.bookings = new PriorityQueue<>(Comparator.comparing(RestaurantBooking::getBookingDateTimeStart));
     }
 
+    public int getTableNumber() {
+        return tableNumber;
+    }
+
     @Override
-    public boolean doesBookingClash(RestaurantBooking newBooking) {
-        if (bookings.isEmpty()) {
-            return false;
-        }
-        return bookings
-                .stream()
-                .anyMatch(b -> newBooking.getBookingDateTimeStart().isBefore(b.getBookingDateTimeEnd()) &&
-                        newBooking.getBookingDateTimeEnd().isAfter(b.getBookingDateTimeStart()));
+    public String getId() {
+        return String.valueOf(tableNumber); // Unique identifier as a string
     }
 
     @Override

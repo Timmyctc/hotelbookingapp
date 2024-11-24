@@ -1,18 +1,23 @@
-package org.dip.tus.booking;
+package org.dip.tus.core;
 
-import org.dip.tus.Customer;
+import org.dip.tus.customer.Customer;
+import org.dip.tus.exception.BookingDateArgumentException;
 
 import java.time.LocalDateTime;
 
-public sealed abstract class AbstractBooking permits ParkingBooking, RestaurantBooking, RoomBooking{
+public abstract class AbstractBooking {
 
+//    private final String bookingId;
     private int roomNumber;
     private Customer customer;
     private LocalDateTime bookingDateTimeStart;
     private LocalDateTime bookingDateTimeEnd;
 
     public AbstractBooking(Customer customer, int roomNumber, LocalDateTime bookingDateTimeStart,
-                           LocalDateTime bookingDateTimeEnd, String bookingID) {
+                           LocalDateTime bookingDateTimeEnd) throws BookingDateArgumentException {
+        if(!bookingDateTimeStart.isBefore(bookingDateTimeEnd)) {
+            throw new BookingDateArgumentException("bookingDateTimeStart must be before bookingDateTimeEnd");
+        }
         this.customer = customer;
         this.roomNumber = roomNumber;
         this.bookingDateTimeStart = bookingDateTimeStart;
@@ -36,5 +41,4 @@ public sealed abstract class AbstractBooking permits ParkingBooking, RestaurantB
         return bookingDateTimeEnd;
     }
     public abstract String generateBookingID();
-    public abstract boolean doesBookingClash();
 }

@@ -1,16 +1,11 @@
-package org.dip.tus.manager;
+package org.dip.tus.parking;
 
-import org.dip.tus.booking.ParkingBooking;
-import org.dip.tus.entity.ParkingSpot;
+import org.dip.tus.core.AbstractBookingManager;
 
-import java.sql.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
-public class ParkingLotManager implements BookingManager<ParkingSpot>{
+public class ParkingLotManager extends AbstractBookingManager<ParkingSpot, ParkingBooking> {
 
     private static final ParkingLotManager instance = new ParkingLotManager();
     public static ParkingLotManager getInstance() {
@@ -32,22 +27,6 @@ public class ParkingLotManager implements BookingManager<ParkingSpot>{
                 .filter(p -> !p.doesBookingClash(parkingBooking))
                 .findFirst().orElse(null);
     }
-
-    @Override
-    public boolean addBooking(ParkingSpot booking) {
-        return false;
-    }
-
-    @Override
-    public boolean removeBooking(ParkingSpot booking) {
-        return false;
-    }
-
-    @Override
-    public ParkingSpot getNextBooking() {
-        return null;
-    }
-
     public ArrayList<ParkingSpot> getParkingSpotList() {
         return new ArrayList<>(parkingSpotList);
     }
