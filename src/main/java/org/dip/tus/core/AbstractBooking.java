@@ -30,9 +30,6 @@ public abstract class AbstractBooking {
     public int getRoomNumber() {
         return roomNumber;
     }
-    public void setRoomNumber(int roomNumber) {
-        this.roomNumber = roomNumber;
-    }
 
     public LocalDateTime getBookingDateTimeStart() {
         return bookingDateTimeStart;

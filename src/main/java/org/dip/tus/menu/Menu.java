@@ -3,6 +3,7 @@ package org.dip.tus.menu;
 import org.dip.tus.customer.Customer;
 import org.dip.tus.customer.CustomerManager;
 import org.dip.tus.exception.BookingDateArgumentException;
+import org.dip.tus.parking.ParkingBooking;
 import org.dip.tus.parking.ParkingLotManager;
 import org.dip.tus.room.RoomBooking;
 import org.dip.tus.room.RoomManager;
@@ -188,6 +189,62 @@ public class Menu {
             System.out.println("Reservation failed. It may conflict with another reservation.");
         }
     }
+
+    private static void handleParkingReservation() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter customer name: ");
+        String customerName = scanner.nextLine().trim();
+
+        LocalDate dob = null;
+        while (dob == null) {
+            try {
+                System.out.print("Enter customer date of birth (YYYY-MM-DD): ");
+                dob = LocalDate.parse(scanner.nextLine());
+            } catch (Exception e) {
+                System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+            }
+        }
+
+        System.out.print("Enter vehicle registration number: ");
+        String vehicleRegistration = scanner.nextLine().trim();
+
+        System.out.print("Enter parking spot section (A-F): ");
+        char section = scanner.nextLine().trim().toUpperCase().charAt(0);
+
+        int spotNumber = parseInt(scanner, "Enter parking spot number (1-20):");
+
+        LocalDateTime startTime = null;
+        while (startTime == null) {
+            try {
+                System.out.print("Enter parking start time (YYYY-MM-DDTHH:MM): ");
+                startTime = LocalDateTime.parse(scanner.nextLine());
+            } catch (Exception e) {
+                System.out.println("Invalid date format. Please use YYYY-MM-DDTHH:MM.");
+            }
+        }
+        int length = parseInt(scanner, "How long is the reservation in hours? ");
+        LocalDateTime endTime = startTime.plusHours(length);
+
+        Customer customer = customerManager.getCustomerOrAdd(customerName, dob);
+
+        ParkingBooking booking;
+        try {
+            booking = new ParkingBooking(customer, spotNumber, startTime, endTime, vehicleRegistration);
+        } catch (BookingDateArgumentException e) {
+            System.out.println("Reservation could not be processed: " + e.getMessage());
+            return;
+        }
+
+        // Step 9: Manage parking spot and add booking
+        parkingLotManager.getOrCreateParkingSpot(section, spotNumber);
+        if (parkingLotManager.addBookingToEntity(section + String.valueOf(spotNumber), booking)) {
+            System.out.println("Parking reservation successful.");
+        } else {
+            System.out.println("Reservation failed. It may conflict with another reservation.");
+        }
+    }
+
 
 
     private static void viewAllRooms() {

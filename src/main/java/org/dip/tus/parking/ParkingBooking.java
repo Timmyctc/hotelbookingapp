@@ -13,7 +13,7 @@ public final class ParkingBooking extends AbstractBooking {
     private String parkingBookingID;
 
     public ParkingBooking(Customer customer, int roomNumber, LocalDateTime startDateTime,
-                          LocalDateTime endDateTime, String registration, String bookingId) throws BookingDateArgumentException {
+                          LocalDateTime endDateTime, String registration) throws BookingDateArgumentException {
         super(customer, roomNumber, startDateTime, endDateTime);
         this.registration = registration;
         this.parkingBookingID = generateBookingID();
