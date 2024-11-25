@@ -2,6 +2,7 @@ package org.dip.tus.room;
 
 import org.dip.tus.core.AbstractEntity;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.PriorityQueue;
@@ -26,6 +27,13 @@ public class Room extends AbstractEntity<RoomBooking> {
 
     public RoomType getRoomType() {
         return roomType;
+    }
+
+
+    public boolean doesBookingClash(LocalDateTime start, LocalDateTime end) {
+        if(bookings.isEmpty()) return false;
+       return (bookings.stream().anyMatch(b -> b.getBookingDateTimeStart().isBefore(end) &&
+                        start.isBefore(b.getBookingDateTimeEnd())));
     }
 
     @Override

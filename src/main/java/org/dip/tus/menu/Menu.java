@@ -5,16 +5,20 @@ import org.dip.tus.customer.CustomerManager;
 import org.dip.tus.exception.BookingDateArgumentException;
 import org.dip.tus.parking.ParkingBooking;
 import org.dip.tus.parking.ParkingLotManager;
+import org.dip.tus.room.Room;
 import org.dip.tus.room.RoomBooking;
 import org.dip.tus.room.RoomManager;
 import org.dip.tus.restaurant.RestaurantBooking;
 import org.dip.tus.restaurant.RestaurantManager;
 import org.dip.tus.room.RoomType;
+import org.dip.tus.service.RoomService;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Menu {
 
@@ -22,6 +26,7 @@ public class Menu {
     private static final RestaurantManager restaurantManager = RestaurantManager.getInstance() ;
     private static final ParkingLotManager parkingLotManager = ParkingLotManager.getInstance();
     private static final CustomerManager customerManager = CustomerManager.getInstance();
+    private static final RoomService roomService = roomService;
 
 
     public static void displayMenu() {
@@ -34,7 +39,7 @@ public class Menu {
             int choice = getInput();
 
             switch (choice) {
-                case 1 -> handleRoomBooking();
+                case 1 -> ();
                 case 2 -> handleRestaurantReservation();
                 case 3 -> handleParkingReservation();
                 case 4 -> viewAllRooms();
@@ -79,66 +84,86 @@ public class Menu {
         }
     }
 
-    private static void handleRoomBooking() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Enter customer name: ");
-        String customerName = scanner.nextLine().trim();
-
-        LocalDate dob = null;
-        while (dob == null) {
-            try {
-                System.out.print("Enter customer date of birth (YYYY-MM-DD): ");
-                dob = LocalDate.parse(scanner.nextLine());
-            } catch (Exception e) {
-                System.out.println("Invalid date format. Please use YYYY-MM-DD.");
-            }
-        }
-
-        System.out.print("Enter room number: ");
-        int roomNumber = Integer.parseInt(scanner.nextLine());
-
-        System.out.print("Enter room type (SINGLE, DOUBLE, KING, QUEEN): ");
-        RoomType roomType = RoomType.valueOf(scanner.nextLine().toUpperCase());
-
-        LocalDate startDate = null;
-        while (startDate == null) {
-            try {
-                System.out.print("Enter booking start date in YYYY-MM-DD (Note all room bookings start at 12 midday by default): ");
-                startDate = LocalDate.parse(scanner.nextLine());
-            } catch (Exception e) {
-                System.out.println("Invalid date format. Please use YYYY-MM-DD.");
-            }
-        }
-        LocalDateTime bookingStart = startDate.atTime(12,00,00);
-
-        LocalDate endDate = null;
-        while (endDate == null) {
-            try {
-                System.out.print("Enter booking end date in YYYY-MM-DD (Note all room bookings end at 11am by default): ");
-                endDate = LocalDate.parse(scanner.nextLine());
-            } catch (Exception e) {
-                System.out.println("Invalid date format. Please use YYYY-MM-DD.");
-            }
-        }
-        LocalDateTime bookingEnd = endDate.atTime(11,00,00);
-
-        Customer customer = customerManager.getCustomerOrAdd(customerName, dob);
-        RoomBooking booking = null;
-        try {
-            booking = new RoomBooking(customer, roomNumber, bookingStart, bookingEnd);
-        } catch (BookingDateArgumentException e) {
-            System.out.println("Booking couldnt be processed. Please try again.");
-            return;
-        }
-
-        roomManager.getOrCreateRoom(roomNumber, roomType);
-        if (roomManager.addBookingToEntity(String.valueOf(roomNumber), booking)) {
-            System.out.println("Room booking successful.");
-        } else {
-            System.out.println("Room booking failed. It may conflict with another booking.");
-        }
-    }
+//    private static void handleRoomBooking() {
+//        Scanner scanner = new Scanner(System.in);
+//
+//        System.out.print("Enter customer name: ");
+//        String customerName = scanner.nextLine().trim();
+//
+//        LocalDate dob = null;
+//        while (dob == null) {
+//            try {
+//                System.out.print("Enter customer date of birth (YYYY-MM-DD): ");
+//                dob = LocalDate.parse(scanner.nextLine());
+//            } catch (Exception e) {
+//                System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+//            }
+//        }
+//
+//        System.out.print("Enter room type (SINGLE, DOUBLE, KING, QUEEN): ");
+//        RoomType roomType = RoomType.valueOf(scanner.nextLine().toUpperCase());
+//
+//        LocalDate startDate = null;
+//        while (startDate == null) {
+//            try {
+//                System.out.print("Enter booking start date in YYYY-MM-DD (Note all room bookings start at 12 midday by default): ");
+//                startDate = LocalDate.parse(scanner.nextLine());
+//            } catch (Exception e) {
+//                System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+//            }
+//        }
+//        LocalDateTime bookingStart = startDate.atTime(12,00,00);
+//
+//        LocalDate endDate = null;
+//        while (endDate == null) {
+//            try {
+//                System.out.print("Enter booking end date in YYYY-MM-DD (Note all room bookings end at 11am by default): ");
+//                endDate = LocalDate.parse(scanner.nextLine());
+//                if(endDate.isBefore(startDate)) {
+//                    System.out.println("End Date Cant be before Start Date");
+//                    endDate = null;
+//                }
+//            } catch (DateTimeException dte) {
+//                System.out.println(dte);
+//            } catch (Exception e) {
+//                System.out.println("Wrong Format");
+//            }
+//        }
+//        LocalDateTime bookingEnd = endDate.atTime(11,00,00);
+//
+//        Customer customer = customerManager.getCustomerOrAdd(customerName, dob);
+//
+//        List<Room> availableRooms = roomManager.getAllEntities()
+//                .stream()
+//                .filter(r -> r.getRoomType().equals(roomType))
+//                .filter(r -> !r.doesBookingClash(bookingStart, bookingEnd))
+//                .collect(Collectors.toList());
+//        roomManager.displayAvailableRooms(availableRooms);
+//
+//        if(availableRooms.isEmpty()) {
+//            System.out.println("No Rooms for that type on that date available, try again");
+//            return;
+//        }
+//        else {
+//            int selectedRoom = parseInt(scanner, "Which Room to Reserve");
+//                if(availableRooms.contains(roomManager.findEntityById(Integer.toString(selectedRoom)))) {
+//
+//                }
+//            RoomBooking booking = null;
+//            try {
+//                booking = new RoomBooking(customer,selectedRoom,bookingStart,bookingEnd);
+//            } catch (BookingDateArgumentException e) {
+//                System.out.println("AHHHHHH");
+//                return;
+//            }
+//            if (roomManager.addBookingToEntity(String.valueOf(selectedRoom), booking)) {
+//            System.out.println("Room booking successful.");
+//                System.out.println(booking);
+//        } else {
+//            System.out.println("Room booking failed. It may conflict with another booking.");
+//            }
+//        }
+//    }
 
     private static void handleRestaurantReservation() {
         Scanner scanner = new Scanner(System.in);

@@ -1,6 +1,8 @@
 package org.dip.tus.core;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.PriorityQueue;
 
@@ -65,5 +67,9 @@ public abstract class AbstractEntity<T extends AbstractBooking> {
     public T getNextBooking() {
 
         return bookings.peek();
+    }
+
+    public PriorityQueue<T> getAllBookings() {
+        return new PriorityQueue<T>(bookings);
     }
 }

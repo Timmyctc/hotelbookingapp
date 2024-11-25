@@ -21,7 +21,7 @@ public class ParkingSpot extends AbstractEntity<ParkingBooking> {
 
     @Override
     public String getId() {
-        return "";
+        return section+Integer.toString(spotNumber);
     }
 
     /**
@@ -59,5 +59,13 @@ public class ParkingSpot extends AbstractEntity<ParkingBooking> {
     @Override
     public int hashCode() {
         return Objects.hash(section, spotNumber);
+    }
+
+    public char getSection() {
+        return this.section;
+    }
+
+    public int getSpotNumber() {
+        return this.spotNumber;
     }
 }
