@@ -33,22 +33,33 @@ public final class RestaurantService {
 
         int numberOfPeople = InputHelper.parseInt("Enter the number of people for the reservation: ");
 
-        LocalDateTime startTime = InputHelper.parseDateTime("Enter reservation start time (YYYY-MM-DDTHH:MM): ");
-        int duration = InputHelper.parseInt("Enter the reservation duration in hours: ");
-        LocalDateTime endTime = startTime.plusHours(duration);
+        LocalDateTime startTime = null;
+        while(startTime == null || !startTime.isAfter(LocalDateTime.now())) {
+            startTime = InputHelper.parseDateTime("Enter parking start time (YYYY-MM-DDTHH:MM): ");
+            if (!startTime.isAfter(LocalDateTime.now())) {
+                System.out.println("Start time must be today or later. Please try again.");
+            }
+        }
+        int duration;
+        do {
+            duration = InputHelper.parseInt("Enter the reservation duration in hours: ");
+        } while (duration < 1 || duration > 3);
+            LocalDateTime endTime = startTime.plusHours(duration);
+
 
         Customer customer = customerManager.getCustomerOrAdd(customerName, dob);
 
+        LocalDateTime finalStartTime = startTime;
         Table suitableTable = restaurantManager.getAllEntities()
                 .stream()
                 .filter(t -> t.getNumberofSeats() == numberOfPeople)
-                .filter(t -> !t.doesBookingClash(startTime, endTime))
+                .filter(t -> !t.doesBookingClash(finalStartTime, endTime))
                 .findAny()
                 .orElseGet(() ->
                         restaurantManager.getAllEntities()
                                 .stream()
                                 .filter(t -> t.getNumberofSeats() > numberOfPeople)
-                                .filter(t -> !t.doesBookingClash(startTime, endTime))
+                                .filter(t -> !t.doesBookingClash(finalStartTime, endTime))
                                 .findAny()
                                 .orElse(null));
 

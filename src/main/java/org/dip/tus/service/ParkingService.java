@@ -6,7 +6,6 @@ import org.dip.tus.exception.BookingDateArgumentException;
 import org.dip.tus.parking.ParkingBooking;
 import org.dip.tus.parking.ParkingLotManager;
 import org.dip.tus.parking.ParkingSpot;
-import org.dip.tus.room.RoomBooking;
 import org.dip.tus.util.InputHelper;
 
 import java.time.LocalDate;
@@ -32,17 +31,26 @@ public final class ParkingService {
 
         String vehicleRegistration = InputHelper.parseString("Enter vehicle registration number: ");
 
-        LocalDateTime startTime = InputHelper.parseDateTime("Enter parking start time (YYYY-MM-DDTHH:MM): ");
-        int duration = InputHelper.parseInt("Enter the parking duration in days: ");
-        LocalDateTime endTime = startTime.plusDays(duration);
-
+        LocalDateTime startTime = null;
+        while (startTime == null || startTime.isBefore(LocalDateTime.now())) {
+            startTime = InputHelper.parseDateTime("Enter parking start time (YYYY-MM-DDTHH:MM): ");
+            if (startTime.isBefore(LocalDateTime.now())) {
+                System.out.println("Start time must be today or later. Please try again.");
+            }
+        }
+        int duration;
+        LocalDateTime endTime;
+        do {
+            duration = InputHelper.parseInt("Enter the parking duration in days: ");
+            endTime = startTime.plusDays(duration);
+        } while (duration < 1);
         Customer customer = customerManager.getCustomerOrAdd(customerName, dob);
 
         ParkingSpot availableSpot = parkingLotManager.getAvailableParkingSpotForDateTime(startTime, endTime);
 
         try {
             ParkingBooking booking = new ParkingBooking(customer, startTime, endTime, vehicleRegistration, availableSpot);
-            if (parkingLotManager.addBookingToEntity(availableSpot.getId(),booking)) {
+            if (parkingLotManager.addBookingToEntity(availableSpot.getId(), booking)) {
                 System.out.println("Parking reservation successful: " + booking);
             } else {
                 System.out.println("Reservation failed due to a conflict.");

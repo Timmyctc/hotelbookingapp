@@ -47,7 +47,13 @@ public final class RoomService {
 
         RoomType roomType = InputHelper.parseRoomEnum("Enter room type (SINGLE, DOUBLE, KING, QUEEN): ");
 
-        LocalDate startDate = InputHelper.parseDate("Enter booking start date (YYYY-MM-DD): ");
+        LocalDate startDate = null;
+        while (startDate == null || !startDate.isAfter(LocalDate.now())) {
+            startDate = InputHelper.parseDate("Enter booking start date (YYYY-MM-DD): ");
+            if (!startDate.isAfter(LocalDate.now())) {
+                System.out.println("Start time must be later than today. Please try again.");
+            }
+        }
         LocalDateTime bookingStart = startDate.atTime(12, 0);
 
         LocalDate endDate = InputHelper.parseDate("Enter booking end date (YYYY-MM-DD): ");
