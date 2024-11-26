@@ -10,12 +10,13 @@ public final class RestaurantBooking extends AbstractBooking {
 
     private final String restaurantBookingID;
     private final MealEnum mealType;
+    private final Table table;
 
-    public RestaurantBooking(Customer customer, LocalDateTime startTime, LocalDateTime endTime, int roomNumber) throws BookingDateArgumentException {
-        super(customer, roomNumber, startTime, endTime);
+    public RestaurantBooking(Customer customer, LocalDateTime startTime, LocalDateTime endTime, Table table) throws BookingDateArgumentException {
+        super(customer, startTime, endTime);
         this.mealType = determineMealType(startTime);
         this.restaurantBookingID = generateBookingID();
-
+        this.table = table;
     }
 
     private MealEnum determineMealType(LocalDateTime startTime) {

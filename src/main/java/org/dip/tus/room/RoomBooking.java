@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public final class RoomBooking extends AbstractBooking {
 
     public RoomBooking(Customer customer, int roomNumber, LocalDateTime startDateTime, LocalDateTime endDateTime) throws BookingDateArgumentException {
-        super(customer, roomNumber, startDateTime, endDateTime);
+        super(customer, startDateTime, endDateTime);
     }
 
     @Override

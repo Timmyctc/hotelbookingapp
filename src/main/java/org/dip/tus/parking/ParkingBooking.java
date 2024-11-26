@@ -14,7 +14,7 @@ public final class ParkingBooking extends AbstractBooking {
 
     public ParkingBooking(Customer customer, int roomNumber, LocalDateTime startDateTime,
                           LocalDateTime endDateTime, String registration) throws BookingDateArgumentException {
-        super(customer, roomNumber, startDateTime, endDateTime);
+        super(customer, startDateTime, endDateTime);
         this.registration = registration;
         this.parkingBookingID = generateBookingID();
     }

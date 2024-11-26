@@ -29,13 +29,6 @@ public class Room extends AbstractEntity<RoomBooking> {
         return roomType;
     }
 
-
-    public boolean doesBookingClash(LocalDateTime start, LocalDateTime end) {
-        if(bookings.isEmpty()) return false;
-       return (bookings.stream().anyMatch(b -> b.getBookingDateTimeStart().isBefore(end) &&
-                        start.isBefore(b.getBookingDateTimeEnd())));
-    }
-
     @Override
     public String toString() {
         return "Room{" +

@@ -20,6 +20,12 @@ public abstract class AbstractEntity<T extends AbstractBooking> {
                         booking.getBookingDateTimeEnd().isAfter(b.getBookingDateTimeStart()));
     }
 
+    public boolean doesBookingClash(LocalDateTime start, LocalDateTime end) {
+        if(bookings.isEmpty()) return false;
+        return (bookings.stream().anyMatch(b -> b.getBookingDateTimeStart().isBefore(end) &&
+                start.isBefore(b.getBookingDateTimeEnd())));
+    }
+
     /**
      * Adds new booking to bookings PriorityQueue, because we've defined the Comparator
      * in the ParkingSpot constructor it will automatically use this as comparison when adding new bookings

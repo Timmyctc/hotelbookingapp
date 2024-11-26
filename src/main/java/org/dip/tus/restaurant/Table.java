@@ -12,7 +12,7 @@ public class Table extends AbstractEntity<RestaurantBooking> {
     private int seats;
 
     public Table(int tableNumber, int seats) {
-        if (tableNumber < 1 || tableNumber > 100) { // Example: Validate table number range
+        if (tableNumber < 1 || tableNumber > 20) {
             throw new IllegalArgumentException("Invalid Table Number");
         }
         this.tableNumber = tableNumber;
@@ -24,9 +24,13 @@ public class Table extends AbstractEntity<RestaurantBooking> {
         return tableNumber;
     }
 
+    public int getNumberofSeats() {
+        return seats;
+    }
+
     @Override
     public String getId() {
-        return String.valueOf(tableNumber); // Unique identifier as a string
+        return String.valueOf(this.tableNumber);
     }
 
     @Override

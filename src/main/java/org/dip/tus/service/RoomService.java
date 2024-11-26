@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 
 public final class RoomService {
 
-//    private final RoomManager roomManager = new RoomManager();
-//    private final CustomerManager customerManager;
+    private final RoomManager roomManager = RoomManager.getInstance();
+    private final CustomerManager customerManager = CustomerManager.getInstance();
     private static final RoomService instance = new RoomService();
 
     private RoomService(){}
@@ -31,8 +31,7 @@ public final class RoomService {
         LocalDate dob = InputHelper.parseDate("Enter customer date of birth (YYYY-MM-DD): ");
 
         RoomType roomType = RoomType.valueOf(
-                InputHelper.parseString("Enter room type (SINGLE, DOUBLE, KING, QUEEN): ").toUpperCase()
-        );
+                InputHelper.parseString("Enter room type (SINGLE, DOUBLE, KING, QUEEN): ").toUpperCase());
 
         LocalDate startDate = InputHelper.parseDate("Enter booking start date (YYYY-MM-DD): ");
         LocalDateTime bookingStart = startDate.atTime(12, 0);
@@ -73,9 +72,5 @@ public final class RoomService {
         } catch (BookingDateArgumentException e) {
             System.out.println("Booking error: " + e.getMessage());
         }
-    }
-
-    public void viewAllRooms() {
-        roomManager.getAllEntities().forEach(System.out::println);
     }
 }

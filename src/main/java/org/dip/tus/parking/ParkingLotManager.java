@@ -14,10 +14,12 @@ public class ParkingLotManager extends AbstractBookingManager<ParkingSpot, Parki
     }
 
     private ParkingLotManager() {
-        parkingSpotList = new ArrayList<>();
+        initialiseParkingLot();
     }
 
-    private ArrayList<ParkingSpot> parkingSpotList;
+    private void initialiseParkingLot() {
+
+    }
 
     /**
      * Retrieves the first currently available parking spot.
@@ -25,7 +27,7 @@ public class ParkingLotManager extends AbstractBookingManager<ParkingSpot, Parki
      * @return A parking spot that is not currently occupied or null if none are available.
      */
     public ParkingSpot getCurrentAvailableParkingSpot() {
-        return parkingSpotList
+        return entities
                 .stream()
                 .filter(p -> !p.isOccupied(LocalDateTime.now()))
                 .findFirst()
@@ -39,7 +41,7 @@ public class ParkingLotManager extends AbstractBookingManager<ParkingSpot, Parki
      * @return A parking spot that does not have conflicting bookings, or null if none are available.
      */
     public ParkingSpot getAvailableParkingSpotForDateTime(ParkingBooking parkingBooking) {
-        return parkingSpotList
+        return entities
                 .stream()
                 .filter(p -> !p.doesBookingClash(parkingBooking))
                 .findFirst()
