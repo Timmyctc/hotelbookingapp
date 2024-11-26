@@ -29,30 +29,17 @@ public final class ParkingService {
 
         String vehicleRegistration = InputHelper.parseString("Enter vehicle registration number: ");
 
-        char section = InputHelper.parseChar("Enter parking spot section (A-F): ", 'A', 'F');
-
-        int spotNumber = InputHelper.parseInt("Enter parking spot number (1-20): ");
-
         LocalDateTime startTime = InputHelper.parseDateTime("Enter parking start time (YYYY-MM-DDTHH:MM): ");
-        int duration = InputHelper.parseInt("Enter the parking duration in hours: ");
-        LocalDateTime endTime = startTime.plusHours(duration);
+        int duration = InputHelper.parseInt("Enter the parking duration in days: ");
+        LocalDateTime endTime = startTime.plusDays(duration);
 
         Customer customer = customerManager.getCustomerOrAdd(customerName, dob);
 
-        ParkingSpot parkingSpot = parkingLotManager.getOrCreateParkingSpot(section, spotNumber);
-        if (parkingSpot == null) {
-            System.out.println("No available parking spot found.");
-            return;
-        }
-
-        if (parkingSpot.doesBookingClash(startTime, endTime)) {
-            System.out.println("Selected parking spot is already booked for the given time.");
-            return;
-        }
+        ParkingSpot availableSpot = parkingLotManager.getAvailableParkingSpotForDateTime(startTime, endTime);
 
         try {
-            ParkingBooking booking = new ParkingBooking(customer, spotNumber, startTime, endTime, vehicleRegistration);
-            if (parkingLotManager.addBookingToEntity(section + String.valueOf(spotNumber), booking)) {
+            ParkingBooking booking = new ParkingBooking(customer, startTime, endTime, vehicleRegistration, availableSpot);
+            if (parkingLotManager.addBookingToEntity(availableSpot.getId(),booking)) {
                 System.out.println("Parking reservation successful: " + booking);
             } else {
                 System.out.println("Reservation failed due to a conflict.");
@@ -60,10 +47,6 @@ public final class ParkingService {
         } catch (BookingDateArgumentException e) {
             System.out.println("Reservation error: " + e.getMessage());
         }
-    }
-
-    public void viewAllParkingSpots() {
-        parkingLotManager.getAllEntities().forEach(System.out::println);
     }
 }
 

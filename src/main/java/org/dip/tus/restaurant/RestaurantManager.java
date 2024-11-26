@@ -9,13 +9,13 @@ import java.util.stream.IntStream;
 public class RestaurantManager extends AbstractBookingManager<Table, RestaurantBooking> {
 
     private static final RestaurantManager instance = new RestaurantManager();
-    private RestaurantManager() {initialiseTables();}
+    private RestaurantManager() {initialiseEntities();}
 
     public static RestaurantManager getInstance() {
         return instance;
     }
 
-    private void initialiseTables() {
+    private void initialiseEntities() {
         IntStream.rangeClosed(1, 5).forEach(i -> addEntity(new Table(i, 2)));
         IntStream.rangeClosed(6, 10).forEach(i -> addEntity(new Table(i, 4)));
         IntStream.rangeClosed(11, 15).forEach(i -> addEntity(new Table(i, 5)));

@@ -3,6 +3,7 @@ package org.dip.tus.restaurant;
 import org.dip.tus.customer.Customer;
 import org.dip.tus.core.AbstractBooking;
 import org.dip.tus.exception.BookingDateArgumentException;
+import org.dip.tus.menu.ConsoleColour;
 
 import java.time.LocalDateTime;
 
@@ -45,12 +46,21 @@ public final class RestaurantBooking extends AbstractBooking {
 
     @Override
     public String toString() {
-        return "RestaurantBooking{" +
-                "restaurantBookingID='" + restaurantBookingID + '\'' +
-                ", mealType=" + mealType +
-                ", startTime=" + getBookingDateTimeStart() +
-                ", endTime=" + getBookingDateTimeEnd() +
-                ", tableNumber=" + getRoomNumber() +
-                '}';
+        return String.format(
+                ConsoleColour.BLUE + "Restaurant Booking Details:\n" + ConsoleColour.RESET +
+                        ConsoleColour.GREEN + "Customer: " + ConsoleColour.RESET + "%s\n" +
+                        ConsoleColour.CYAN + "Meal Type: " + ConsoleColour.RESET + "%s\n" +
+                        ConsoleColour.YELLOW + "Start Time: " + ConsoleColour.RESET + "%s\n" +
+                        ConsoleColour.YELLOW + "End Time: " + ConsoleColour.RESET + "%s\n" +
+                        ConsoleColour.PURPLE + "Table Number: " + ConsoleColour.RESET + "%d\n" +
+                        ConsoleColour.RED + "Booking ID: " + ConsoleColour.RESET + "%s\n",
+                getCustomer().getName(),
+                getMealType(),
+                getBookingDateTimeStart(),
+                getBookingDateTimeEnd(),
+                table.getTableNumber(),
+                restaurantBookingID
+        );
     }
+
 }

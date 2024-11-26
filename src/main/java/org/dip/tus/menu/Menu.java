@@ -11,6 +11,7 @@ import org.dip.tus.room.RoomManager;
 import org.dip.tus.restaurant.RestaurantBooking;
 import org.dip.tus.restaurant.RestaurantManager;
 import org.dip.tus.room.RoomType;
+import org.dip.tus.service.ParkingService;
 import org.dip.tus.service.RestaurantService;
 import org.dip.tus.service.RoomService;
 
@@ -29,6 +30,7 @@ public class Menu {
     private static final CustomerManager customerManager = CustomerManager.getInstance();
     private static final RoomService roomService = RoomService.getInstance();
     private static final RestaurantService restaurantService = RestaurantService.getInstance();
+    private static final ParkingService parkingService = ParkingService.getInstance();
 
 
     public static void displayMenu() {
@@ -43,11 +45,12 @@ public class Menu {
             switch (choice) {
                 case 1 -> roomService.handleRoomBooking();
                 case 2 -> restaurantService.handleRestaurantReservation();
-                case 3 -> handleParkingReservation();
+                case 3 -> parkingService.handleParkingReservation();
                 case 4 -> viewAllRooms();
                 case 5 -> viewAllRestaurantTables();
-                case 6 -> viewAllCustomers();
-                case 7 -> {
+                case 6 -> viewAllParkingSpots();
+                case 7 -> viewAllCustomers();
+                case 8 -> {
                     System.out.println("Exiting system...");
                     menuLoop = false;
                 }
@@ -70,9 +73,10 @@ public class Menu {
         System.out.println("3) Make a Parking Reservation");
         System.out.println("4) View All Rooms");
         System.out.println("5) View All Restaurant Tables");
-        System.out.println("6) View All Customer Records");
-        System.out.println("7) Quit");
-        System.out.print("Select an option [1-5]: ");
+        System.out.println("6) View All Parking Spots");
+        System.out.println("7) View All Customer Records");
+        System.out.println("8) Quit");
+        System.out.print("Select an option [1-8]: ");
     }
 
     private static int getInput() {
@@ -85,59 +89,6 @@ public class Menu {
         }
     }
 
-    private static void handleParkingReservation() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Enter customer name: ");
-        String customerName = scanner.nextLine().trim();
-
-        LocalDate dob = null;
-        while (dob == null) {
-            try {
-                System.out.print("Enter customer date of birth (YYYY-MM-DD): ");
-                dob = LocalDate.parse(scanner.nextLine());
-            } catch (Exception e) {
-                System.out.println("Invalid date format. Please use YYYY-MM-DD.");
-            }
-        }
-
-        System.out.print("Enter vehicle registration number: ");
-        String vehicleRegistration = scanner.nextLine().trim();
-
-        System.out.print("Enter parking spot section (A-F): ");
-        char section = scanner.nextLine().trim().toUpperCase().charAt(0);
-
-        int spotNumber = parseInt(scanner, "Enter parking spot number (1-20):");
-
-        LocalDateTime startTime = null;
-        while (startTime == null) {
-            try {
-                System.out.print("Enter parking start time (YYYY-MM-DDTHH:MM): ");
-                startTime = LocalDateTime.parse(scanner.nextLine());
-            } catch (Exception e) {
-                System.out.println("Invalid date format. Please use YYYY-MM-DDTHH:MM.");
-            }
-        }
-        int length = parseInt(scanner, "How long is the reservation in hours? ");
-        LocalDateTime endTime = startTime.plusHours(length);
-
-        Customer customer = customerManager.getCustomerOrAdd(customerName, dob);
-
-        ParkingBooking booking;
-        try {
-            booking = new ParkingBooking(customer, spotNumber, startTime, endTime, vehicleRegistration);
-        } catch (BookingDateArgumentException e) {
-            System.out.println("Reservation could not be processed: " + e.getMessage());
-            return;
-        }
-        parkingLotManager.getOrCreateParkingSpot(section, spotNumber);
-        if (parkingLotManager.addBookingToEntity(section + String.valueOf(spotNumber), booking)) {
-            System.out.println("Parking reservation successful.");
-        } else {
-            System.out.println("Reservation failed. It may conflict with another reservation.");
-        }
-    }
-
     private static void viewAllRooms() {
         roomManager.displayAvailableRooms(roomManager.getAllEntities());
     }
@@ -146,9 +97,12 @@ public class Menu {
         restaurantManager.displayAvailableTables(restaurantManager.getAllEntities());
     }
 
+    private static void viewAllParkingSpots() {
+        parkingLotManager.displayAvailableParkingSpots(parkingLotManager.getAllEntities());
+    }
+
     private static void viewAllCustomers() {
-        System.out.println("Customers:");
-        customerManager.getCustomerList().forEach(System.out::println);
+      customerManager.displayAllCustomers();
     }
 
     private static int parseInt(Scanner scanner, String prompt) {

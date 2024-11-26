@@ -12,9 +12,9 @@ public class ParkingSpot extends AbstractEntity<ParkingBooking> {
     private int spotNumber;
 
     public ParkingSpot(char section, int spotNumber) {
-        if(section >= 'A' && section <= 'F') {this.section = section;}
+        if(section >= 'A' && section <= 'D') {this.section = section;}
         else {throw new IllegalArgumentException("Invalid Section");}
-        if(spotNumber >= 1 && spotNumber <= 20) {this.spotNumber = spotNumber;}
+        if(spotNumber >= 1 && spotNumber <= 5) {this.spotNumber = spotNumber;}
         else throw new IllegalArgumentException("Invalid Parking Spot Number");
         this.bookings = new PriorityQueue<>(Comparator.comparing(ParkingBooking::getBookingDateTimeStart));
     }

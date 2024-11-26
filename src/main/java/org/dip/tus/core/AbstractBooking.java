@@ -2,6 +2,7 @@ package org.dip.tus.core;
 
 import org.dip.tus.customer.Customer;
 import org.dip.tus.exception.BookingDateArgumentException;
+import org.dip.tus.menu.ConsoleColour;
 
 import java.time.LocalDateTime;
 
@@ -25,8 +26,9 @@ public abstract class AbstractBooking {
     public Customer getCustomer() {
         return customer;
     }
-    public int getRoomNumber() {
-        return roomNumber;
+
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber=roomNumber;
     }
 
     public LocalDateTime getBookingDateTimeStart() {
@@ -36,4 +38,19 @@ public abstract class AbstractBooking {
         return bookingDateTimeEnd;
     }
     public abstract String generateBookingID();
+
+    @Override
+    public String toString() {
+        return String.format(
+                ConsoleColour.BLUE + "Booking Details:\n" + ConsoleColour.RESET +
+                        ConsoleColour.GREEN + "Customer: " + ConsoleColour.RESET + "%s\n" +
+                        ConsoleColour.CYAN + "Booking Start: " + ConsoleColour.RESET + "%s\n" +
+                        ConsoleColour.CYAN + "Booking End: " + ConsoleColour.RESET + "%s\n",
+                customer.getName(),
+                bookingDateTimeStart,
+                bookingDateTimeEnd
+        );
+    }
+
+
 }

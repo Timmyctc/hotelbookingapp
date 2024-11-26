@@ -1,17 +1,17 @@
 package org.dip.tus.customer;
 
+import org.dip.tus.menu.ConsoleColour;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class Customer {
     private final String name;
     private final LocalDate dateOfBirth;
-    private final boolean isPlusMember;
 
-    protected Customer(String name, LocalDate dateOfBirth, boolean isPlusMember) {
+    protected Customer(String name, LocalDate dateOfBirth) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
-        this.isPlusMember = isPlusMember;
     }
 
     public String getName() {
@@ -22,9 +22,6 @@ public class Customer {
         return dateOfBirth;
     }
 
-    public boolean isPlusMember() {
-        return isPlusMember;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -36,10 +33,13 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" +
-                "name='" + name + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", isPlusMember=" + isPlusMember +
-                '}';
+        return String.format(
+                ConsoleColour.CYAN + "Customer Details:\n" + ConsoleColour.RESET +
+                        ConsoleColour.GREEN + "Name: " + ConsoleColour.RESET + "%s\n" +
+                        ConsoleColour.YELLOW + "Date of Birth: " + ConsoleColour.RESET + "%s\n",
+                name,
+                dateOfBirth
+        );
     }
+
 }

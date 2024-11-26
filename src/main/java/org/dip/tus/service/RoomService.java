@@ -30,8 +30,7 @@ public final class RoomService {
         String customerName = InputHelper.parseString("Enter customer name: ");
         LocalDate dob = InputHelper.parseDate("Enter customer date of birth (YYYY-MM-DD): ");
 
-        RoomType roomType = RoomType.valueOf(
-                InputHelper.parseString("Enter room type (SINGLE, DOUBLE, KING, QUEEN): ").toUpperCase());
+        RoomType roomType = InputHelper.parseRoomEnum("Enter room type (SINGLE, DOUBLE, KING, QUEEN): ");
 
         LocalDate startDate = InputHelper.parseDate("Enter booking start date (YYYY-MM-DD): ");
         LocalDateTime bookingStart = startDate.atTime(12, 0);
@@ -52,25 +51,28 @@ public final class RoomService {
             return;
         }
 
-        roomManager.displayAvailableRooms(availableRooms);
-
-        int selectedRoomNumber = InputHelper.parseInt("Enter the room number to reserve: ");
-        Room selectedRoom = roomManager.findEntityById(String.valueOf(selectedRoomNumber));
-
-        if (selectedRoom == null) {
-            System.out.println("Invalid room number selected.");
-            return;
-        }
-
-        try {
-            RoomBooking booking = new RoomBooking(customer, selectedRoomNumber, bookingStart, bookingEnd);
-            if (roomManager.addBookingToEntity(String.valueOf(selectedRoomNumber), booking)) {
-                System.out.println("Room booking successful: " + booking);
-            } else {
-                System.out.println("Room booking failed due to a conflict.");
+        Room selectedRoom = null;
+        while (selectedRoom == null) {
+            roomManager.displayAvailableRooms(availableRooms);
+            int selectedRoomNumber = InputHelper.parseInt("Enter the room number to reserve: ");
+            selectedRoom = roomManager.findEntityById(String.valueOf(selectedRoomNumber));
+            if (selectedRoom == null) {
+                System.out.println("Invalid room number selected.");
+            } else if (!availableRooms.contains(selectedRoom)) {
+                System.out.println("Not a valid Entry");
+                selectedRoom = null;
+                continue;
             }
-        } catch (BookingDateArgumentException e) {
-            System.out.println("Booking error: " + e.getMessage());
+            try {
+                RoomBooking booking = new RoomBooking(customer, selectedRoomNumber, bookingStart, bookingEnd);
+                if (roomManager.addBookingToEntity(String.valueOf(selectedRoomNumber), booking)) {
+                    System.out.println("Room booking successful: \n" + booking);
+                } else {
+                    System.out.println("Room booking failed due to a conflict.");
+                }
+            } catch (BookingDateArgumentException e) {
+                System.out.println("Booking error: " + e.getMessage());
+            }
         }
     }
 }

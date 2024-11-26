@@ -1,5 +1,7 @@
 package org.dip.tus.customer;
 
+import org.dip.tus.menu.ConsoleColour;
+
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -9,7 +11,8 @@ public class CustomerManager {
     private static final CustomerManager instance = new CustomerManager();
     private final Map<String, Customer> customerRegistry = new HashMap<>();
 
-    private CustomerManager() {}
+    private CustomerManager() {
+    }
 
     public static CustomerManager getInstance() {
         return instance;
@@ -45,7 +48,7 @@ public class CustomerManager {
      * Retrieves an existing customer with the given name or adds a new customer if none exists.
      *
      * @param name Customer name to search for.
-     * @param dob Customer date of birth.
+     * @param dob  Customer date of birth.
      * @return The existing or newly added customer.
      */
     public Customer getCustomerOrAdd(String name, LocalDate dob) {
@@ -53,11 +56,34 @@ public class CustomerManager {
         if (existingCustomer != null) {
             return existingCustomer;
         }
-        Customer newCustomer = new Customer(name, dob, true);
+        Customer newCustomer = new Customer(name, dob);
         return addCustomer(newCustomer);
     }
 
-    public List<String> getCustomerList() {
-        return List.of(customerRegistry.toString());
+    public List<Customer> getCustomerList() {
+        return customerRegistry.values().stream().collect(Collectors.toList());
+    }
+
+    public void displayAllCustomers() {
+        List<Customer> customers = getCustomerList();
+
+        if (customers.isEmpty()) {
+            System.out.println(ConsoleColour.RED + "No customers are currently registered." + ConsoleColour.RESET);
+            return;
+        }
+
+        System.out.println(ConsoleColour.BLUE + "+--------------------------------------------+");
+        System.out.println("|              Registered Customers          |");
+        System.out.println("+--------------------------------------------+");
+        System.out.println("| Name                  | Date of Birth      |");
+        System.out.println("+-----------------------+--------------------+" + ConsoleColour.RESET);
+
+        for (Customer customer : customers) {
+            System.out.printf(ConsoleColour.CYAN + "| %-21s | %-18s |\n" + ConsoleColour.RESET,
+                    customer.getName(),
+                    customer.getDateOfBirth().toString());
+        }
+
+        System.out.println(ConsoleColour.BLUE + "+--------------------------------------------+" + ConsoleColour.RESET);
     }
 }
