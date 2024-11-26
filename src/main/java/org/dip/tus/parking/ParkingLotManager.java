@@ -1,10 +1,9 @@
 package org.dip.tus.parking;
 
 import org.dip.tus.core.AbstractBookingManager;
+import org.dip.tus.customer.Customer;
 import org.dip.tus.menu.ConsoleColour;
-import org.dip.tus.restaurant.Table;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -120,4 +119,23 @@ public class ParkingLotManager extends AbstractBookingManager<ParkingSpot, Parki
         System.out.println(ConsoleColour.BLUE + "+---------------------------------------------------+" + ConsoleColour.RESET);
     }
 
+    public double calculateCostForBooking(ParkingBooking parkingBooking) {
+        long days = java.time.Duration.between(parkingBooking.getBookingDateTimeStart(), parkingBooking.getBookingDateTimeEnd()).toDays();
+        ParkingSpot parkingSpot = parkingBooking.getParkingSpot();
+        double baseCost = parkingSpot.getCostPerHour();
+        double totalCost = 0;
+
+        LocalDateTime currentTime = parkingBooking.getBookingDateTimeStart();
+        for (int i = 0; i < days; i++) {
+            double dailyRate = baseCost;
+            totalCost += dailyRate;
+            currentTime = currentTime.plusDays(1);
+        }
+        return totalCost;
+    }
+
+    @Override
+    public List<ParkingBooking> getAllBookingsForCustomer(Customer customer) {
+        return List.of();
+    }
 }

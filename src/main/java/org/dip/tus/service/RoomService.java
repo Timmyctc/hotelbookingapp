@@ -26,6 +26,21 @@ public final class RoomService {
         return instance;
     }
 
+    public List<RoomBooking> getAllBookingsForCustomer(Customer customer) {
+        return roomManager.getAllEntities()
+                .stream()
+                .flatMap(room -> room.getAllBookings().stream())
+                .filter(booking -> booking.getCustomer().equals(customer))
+                .collect(Collectors.toList());
+    }
+
+    public List<RoomBooking> getAllBookings() {
+        return roomManager.getAllEntities()
+                .stream()
+                .flatMap(room -> room.getAllBookings().stream())
+                .collect(Collectors.toList());
+    }
+
     public void handleRoomBooking() {
         String customerName = InputHelper.parseString("Enter customer name: ");
         LocalDate dob = InputHelper.parseDate("Enter customer date of birth (YYYY-MM-DD): ");
@@ -64,7 +79,7 @@ public final class RoomService {
                 continue;
             }
             try {
-                RoomBooking booking = new RoomBooking(customer, selectedRoomNumber, bookingStart, bookingEnd);
+                RoomBooking booking = new RoomBooking(customer, roomManager.findEntityById(String.valueOf(selectedRoomNumber)), bookingStart, bookingEnd);
                 if (roomManager.addBookingToEntity(String.valueOf(selectedRoomNumber), booking)) {
                     System.out.println("Room booking successful: \n" + booking);
                 } else {

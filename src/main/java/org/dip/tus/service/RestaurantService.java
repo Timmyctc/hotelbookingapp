@@ -6,6 +6,7 @@ import org.dip.tus.exception.BookingDateArgumentException;
 import org.dip.tus.restaurant.RestaurantBooking;
 import org.dip.tus.restaurant.RestaurantManager;
 import org.dip.tus.restaurant.Table;
+import org.dip.tus.room.RoomBooking;
 import org.dip.tus.util.InputHelper;
 
 import java.time.LocalDate;
@@ -66,8 +67,10 @@ public final class RestaurantService {
             System.out.println("Reservation error: " + e.getMessage());
         }
     }
-
-    public void viewAllTables() {
-        restaurantManager.getAllEntities().forEach(System.out::println);
+    public List<RestaurantBooking> getAllBookings() {
+        return restaurantManager.getAllEntities()
+                .stream()
+                .flatMap(room -> room.getAllBookings().stream())
+                .collect(Collectors.toList());
     }
 }

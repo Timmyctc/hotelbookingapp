@@ -2,7 +2,6 @@ package org.dip.tus.room;
 
 import org.dip.tus.core.AbstractEntity;
 
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.PriorityQueue;
@@ -27,6 +26,15 @@ public class Room extends AbstractEntity<RoomBooking> {
 
     public RoomType getRoomType() {
         return roomType;
+    }
+
+    public double getBaseCost() {
+        return switch (getRoomType()) {
+            case SINGLE -> 80.0;
+            case DOUBLE -> 100.0;
+            case QUEEN -> 120.0;
+            case KING -> 150.0;
+        };
     }
 
     @Override

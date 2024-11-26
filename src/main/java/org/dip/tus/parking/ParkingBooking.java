@@ -26,6 +26,10 @@ public final class ParkingBooking extends AbstractBooking {
         return parkingLotManager.getAvailableParkingSpotForDateTime(startDateTime, endDateTime);
     }
 
+    public ParkingSpot getParkingSpot() {
+        return parkingSpot;
+    }
+
     @Override
     public String generateBookingID() {
         return new StringBuilder()

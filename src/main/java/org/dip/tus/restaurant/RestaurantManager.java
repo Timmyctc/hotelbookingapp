@@ -1,9 +1,11 @@
 package org.dip.tus.restaurant;
 
 import org.dip.tus.core.AbstractBookingManager;
+import org.dip.tus.customer.Customer;
 import org.dip.tus.menu.ConsoleColour;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class RestaurantManager extends AbstractBookingManager<Table, RestaurantBooking> {
@@ -48,4 +50,11 @@ public class RestaurantManager extends AbstractBookingManager<Table, RestaurantB
         System.out.println(ConsoleColour.BLUE + "+---------------------------------------------------+" + ConsoleColour.RESET);
     }
 
+    public List<RestaurantBooking> getAllBookingsForCustomer(Customer customer) {
+        return  getAllEntities()
+                .stream()
+                .flatMap(room -> room.getAllBookings().stream())
+                .filter(booking -> booking.getCustomer().equals(customer))
+                .collect(Collectors.toList());
+    }
 }

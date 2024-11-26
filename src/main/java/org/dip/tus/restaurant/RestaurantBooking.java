@@ -20,6 +20,14 @@ public final class RestaurantBooking extends AbstractBooking {
         this.table = table;
     }
 
+    public double calculateCost() {
+        return switch (mealType) {
+            case BREAKFAST -> 20.0;
+            case LUNCH -> 30.0;
+            case DINNER -> 40.0;
+        };
+    }
+
     private MealEnum determineMealType(LocalDateTime startTime) {
         int hour = startTime.getHour();
         if (hour < 12) {

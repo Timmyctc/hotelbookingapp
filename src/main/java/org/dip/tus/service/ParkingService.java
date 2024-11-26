@@ -6,10 +6,13 @@ import org.dip.tus.exception.BookingDateArgumentException;
 import org.dip.tus.parking.ParkingBooking;
 import org.dip.tus.parking.ParkingLotManager;
 import org.dip.tus.parking.ParkingSpot;
+import org.dip.tus.room.RoomBooking;
 import org.dip.tus.util.InputHelper;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public final class ParkingService {
 
@@ -48,5 +51,19 @@ public final class ParkingService {
             System.out.println("Reservation error: " + e.getMessage());
         }
     }
+    public List<ParkingBooking> getAllBookingsForCustomer(Customer customer) {
+        return parkingLotManager.getAllEntities()
+                .stream()
+                .flatMap(room -> room.getAllBookings().stream())
+                .filter(booking -> booking.getCustomer().equals(customer))
+                .collect(Collectors.toList());
+    }
+    public List<ParkingBooking> getAllBookings() {
+        return parkingLotManager.getAllEntities()
+                .stream()
+                .flatMap(room -> room.getAllBookings().stream())
+                .collect(Collectors.toList());
+    }
+
 }
 

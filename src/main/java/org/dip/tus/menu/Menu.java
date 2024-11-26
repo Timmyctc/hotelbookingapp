@@ -2,25 +2,16 @@ package org.dip.tus.menu;
 
 import org.dip.tus.customer.Customer;
 import org.dip.tus.customer.CustomerManager;
-import org.dip.tus.exception.BookingDateArgumentException;
-import org.dip.tus.parking.ParkingBooking;
 import org.dip.tus.parking.ParkingLotManager;
-import org.dip.tus.room.Room;
-import org.dip.tus.room.RoomBooking;
 import org.dip.tus.room.RoomManager;
-import org.dip.tus.restaurant.RestaurantBooking;
 import org.dip.tus.restaurant.RestaurantManager;
-import org.dip.tus.room.RoomType;
 import org.dip.tus.service.ParkingService;
+import org.dip.tus.service.ReportService;
 import org.dip.tus.service.RestaurantService;
 import org.dip.tus.service.RoomService;
 
-import java.time.DateTimeException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Scanner;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 public class Menu {
 
@@ -31,6 +22,7 @@ public class Menu {
     private static final RoomService roomService = RoomService.getInstance();
     private static final RestaurantService restaurantService = RestaurantService.getInstance();
     private static final ParkingService parkingService = ParkingService.getInstance();
+    private static final ReportService reportService = ReportService.getInstance();
 
 
     public static void displayMenu() {
@@ -50,7 +42,8 @@ public class Menu {
                 case 5 -> viewAllRestaurantTables();
                 case 6 -> viewAllParkingSpots();
                 case 7 -> viewAllCustomers();
-                case 8 -> {
+                case 8 -> displayReportMenu();
+                case 9 -> {
                     System.out.println("Exiting system...");
                     menuLoop = false;
                 }
@@ -75,9 +68,34 @@ public class Menu {
         System.out.println("5) View All Restaurant Tables");
         System.out.println("6) View All Parking Spots");
         System.out.println("7) View All Customer Records");
-        System.out.println("8) Quit");
-        System.out.print("Select an option [1-8]: ");
+        System.out.println("8) Generate Reports");
+        System.out.println("9) Quit");
+        System.out.print("Select an option [1-9]: ");
     }
+    private static void displayReportMenu() {
+        boolean reportMenuLoop = true;
+        while (reportMenuLoop) {
+            System.out.println("----------------------------------------------------");
+            System.out.println("Report Options:");
+            System.out.println("1) Customer Booking Report");
+            System.out.println("2) Booking Summary Report");
+            System.out.println("3) Financial Report");
+            System.out.println("4) Back to Main Menu");
+            System.out.println("----------------------------------------------------");
+            System.out.print("Select an option [1-4]: ");
+
+            int reportChoice = getInput();
+
+            switch (reportChoice) {
+                case 1 -> reportService.generateCustomerBookingReport(customerManager.getCustomerList().toArray(new Customer[0]));
+                case 2 -> reportService.generateBookingSummaryReport();
+                case 3 -> reportService.generateFinancialReport();
+                case 4 -> reportMenuLoop = false; // Exit report menu
+                default -> System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
+
 
     private static int getInput() {
         Scanner scanner = new Scanner(System.in);
@@ -102,20 +120,6 @@ public class Menu {
     }
 
     private static void viewAllCustomers() {
-      customerManager.displayAllCustomers();
-    }
-
-    private static int parseInt(Scanner scanner, String prompt) {
-        Integer value = null;
-        while (value == null || value < 0) {
-            System.out.print(prompt);
-            try {
-                value = Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid number. Please enter a valid integer.");
-            }
-        }
-        scanner.reset();
-        return value;
+        customerManager.displayAllCustomers();
     }
 }

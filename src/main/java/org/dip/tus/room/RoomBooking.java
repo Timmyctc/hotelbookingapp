@@ -9,15 +9,19 @@ import java.time.LocalDateTime;
 
 public final class RoomBooking extends AbstractBooking {
 
-    private int roomNumber;
+    private Room room;
 
-    public RoomBooking(Customer customer, int roomNumber, LocalDateTime startDateTime, LocalDateTime endDateTime) throws BookingDateArgumentException {
+    public RoomBooking(Customer customer, Room room, LocalDateTime startDateTime, LocalDateTime endDateTime) throws BookingDateArgumentException {
         super(customer, startDateTime, endDateTime);
-        this.roomNumber = roomNumber;
+        this.room = room;
+    }
+
+    public Room getRoom() {
+        return room;
     }
 
     public int getRoomNumber() {
-        return roomNumber;
+        return room.getRoomNumber();
     }
 
     @Override
@@ -44,5 +48,7 @@ public final class RoomBooking extends AbstractBooking {
                 generateBookingID()
         );
     }
+
+
 
 }

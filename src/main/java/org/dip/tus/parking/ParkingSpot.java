@@ -2,6 +2,7 @@ package org.dip.tus.parking;
 
 import org.dip.tus.core.AbstractEntity;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.PriorityQueue;
@@ -10,6 +11,12 @@ public class ParkingSpot extends AbstractEntity<ParkingBooking> {
 
     private char section;
     private int spotNumber;
+    private final double costPerHour = 5.0;
+
+    public double calculateCost(LocalDateTime start, LocalDateTime end) {
+        long hours = java.time.Duration.between(start, end).toHours();
+        return hours * costPerHour;
+    }
 
     public ParkingSpot(char section, int spotNumber) {
         if(section >= 'A' && section <= 'D') {this.section = section;}
@@ -17,6 +24,10 @@ public class ParkingSpot extends AbstractEntity<ParkingBooking> {
         if(spotNumber >= 1 && spotNumber <= 5) {this.spotNumber = spotNumber;}
         else throw new IllegalArgumentException("Invalid Parking Spot Number");
         this.bookings = new PriorityQueue<>(Comparator.comparing(ParkingBooking::getBookingDateTimeStart));
+    }
+
+    public double getCostPerHour() {
+        return costPerHour;
     }
 
     @Override
