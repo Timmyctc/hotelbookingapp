@@ -28,14 +28,18 @@ public final class RestaurantService {
     }
 
     public void handleRestaurantReservation() {
-        String customerName = InputHelper.parseString("Enter customer name: ");
+        String customerName = "";
+        while(customerName.isBlank()) {
+            customerName = InputHelper.parseString("Enter customer name: ");
+            if(customerName.isBlank()) System.out.println("Name cannot be blank!");
+        }
         LocalDate dob = InputHelper.parseDate("Enter customer date of birth (YYYY-MM-DD): ");
 
         int numberOfPeople = InputHelper.parseInt("Enter the number of people for the reservation: ");
 
         LocalDateTime startTime = null;
         while(startTime == null || !startTime.isAfter(LocalDateTime.now())) {
-            startTime = InputHelper.parseDateTime("Enter parking start time (YYYY-MM-DDTHH:MM): ");
+            startTime = InputHelper.parseDateTime("Enter booking start time (YYYY-MM-DDTHH:MM): ");
             if (!startTime.isAfter(LocalDateTime.now())) {
                 System.out.println("Start time must be today or later. Please try again.");
             }
@@ -43,6 +47,7 @@ public final class RestaurantService {
         int duration;
         do {
             duration = InputHelper.parseInt("Enter the reservation duration in hours: ");
+            if(duration <1 || duration > 3) System.out.println("Restaurant Reservation must be between 1 to 3 hours long.");
         } while (duration < 1 || duration > 3);
             LocalDateTime endTime = startTime.plusHours(duration);
 
@@ -68,7 +73,7 @@ public final class RestaurantService {
             return;
         }
         try {
-            RestaurantBooking booking = new RestaurantBooking(customer, startTime, endTime, suitableTable);
+            RestaurantBooking booking = new RestaurantBooking(customer, startTime, endTime, suitableTable, numberOfPeople);
             if (restaurantManager.addBookingToEntity(String.valueOf(suitableTable.getTableNumber()), booking)) {
                 System.out.println("Restaurant reservation successful: " + booking);
             } else {

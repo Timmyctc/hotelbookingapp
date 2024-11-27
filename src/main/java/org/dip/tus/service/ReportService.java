@@ -48,7 +48,7 @@ public class ReportService {
                 System.out.println(ConsoleColour.GREEN + "  Room Bookings:" + ConsoleColour.RESET);
                 roomBookings.forEach(booking -> {
                     double cost = roomManager.calculateCostForBooking(booking);
-                    System.out.println("    - " + booking + " | Cost: $" + cost);
+                    System.out.println("    - " + booking + " | Cost: €" + cost);
                 });
             }
 
@@ -58,7 +58,7 @@ public class ReportService {
                 System.out.println(ConsoleColour.YELLOW + "  Parking Bookings:" + ConsoleColour.RESET);
                 parkingBookings.forEach(booking -> {
                     double cost = parkingLotManager.calculateCostForBooking(booking);
-                    System.out.println("    - " + booking + " | Cost: $" + cost);
+                    System.out.println("    - " + booking + " | Cost: €" + cost);
                 });
             }
 
@@ -67,8 +67,8 @@ public class ReportService {
             if (!restaurantBookings.isEmpty()) {
                 System.out.println(ConsoleColour.PURPLE + "  Restaurant Bookings:" + ConsoleColour.RESET);
                 restaurantBookings.forEach(booking -> {
-                    double cost = booking.calculateCost();
-                    System.out.println("    - " + booking + " | Cost: $" + cost);
+                    double cost = booking.getCost();
+                    System.out.println("    - " + booking + " | Cost: €" + cost);
                 });
             }
 
@@ -84,13 +84,16 @@ public class ReportService {
         System.out.println("----------------------------------------------------");
 
         System.out.println(ConsoleColour.GREEN + "Room Bookings:" + ConsoleColour.RESET);
-        roomService.getAllBookings().forEach(System.out::println);
+        if(roomService.getAllBookings().isEmpty()) System.out.println("No Bookings to Display\n");
+        else roomService.getAllBookings().forEach(System.out::println);
 
         System.out.println(ConsoleColour.YELLOW + "Parking Bookings:" + ConsoleColour.RESET);
-        parkingService.getAllBookings().forEach(System.out::println);
+        if(parkingService.getAllBookings().isEmpty()) System.out.println("No Bookings to Display\n");
+        else parkingService.getAllBookings().forEach(System.out::println);
 
         System.out.println(ConsoleColour.PURPLE + "Restaurant Bookings:" + ConsoleColour.RESET);
-        restaurantService.getAllBookings().forEach(System.out::println);
+        if(restaurantService.getAllBookings().isEmpty()) System.out.println("No Bookings to Display\n");
+        else restaurantService.getAllBookings().forEach(System.out::println);
 
         System.out.println("----------------------------------------------------");
     }
@@ -105,20 +108,20 @@ public class ReportService {
         double roomRevenue = roomService.getAllBookings().stream()
                 .mapToDouble(roomManager::calculateCostForBooking)
                 .sum();
-        System.out.println(ConsoleColour.GREEN + "Total Room Revenue: $" + roomRevenue + ConsoleColour.RESET);
+        System.out.println(ConsoleColour.GREEN + "Total Room Revenue: €" + roomRevenue + ConsoleColour.RESET);
 
         double parkingRevenue = parkingService.getAllBookings().stream()
                 .mapToDouble(parkingLotManager::calculateCostForBooking)
                 .sum();
-        System.out.println(ConsoleColour.YELLOW + "Total Parking Revenue: $" + parkingRevenue + ConsoleColour.RESET);
+        System.out.println(ConsoleColour.YELLOW + "Total Parking Revenue: €" + parkingRevenue + ConsoleColour.RESET);
 
         double restaurantRevenue = restaurantService.getAllBookings().stream()
-                .mapToDouble(RestaurantBooking::calculateCost)
+                .mapToDouble(RestaurantBooking::getCost)
                 .sum();
-        System.out.println(ConsoleColour.PURPLE + "Total Restaurant Revenue: $" + restaurantRevenue + ConsoleColour.RESET);
+        System.out.println(ConsoleColour.PURPLE + "Total Restaurant Revenue: €" + restaurantRevenue + ConsoleColour.RESET);
 
         double totalRevenue = roomRevenue + parkingRevenue + restaurantRevenue;
-        System.out.println(ConsoleColour.BLUE + "Total Revenue: $" + totalRevenue + ConsoleColour.RESET);
+        System.out.println(ConsoleColour.BLUE + "Total Revenue: €" + totalRevenue + ConsoleColour.RESET);
         System.out.println("----------------------------------------------------");
     }
 

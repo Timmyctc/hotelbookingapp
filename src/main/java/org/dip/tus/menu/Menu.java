@@ -35,7 +35,7 @@ public class Menu {
             int choice = getInput();
 
             switch (choice) {
-                case 1 -> roomService.handleRoomBooking();
+                case 1 -> displayRoomMenu();
                 case 2 -> restaurantService.handleRestaurantReservation();
                 case 3 -> parkingService.handleParkingReservation();
                 case 4 -> viewAllRooms();
@@ -61,7 +61,7 @@ public class Menu {
     }
 
     private static void displayOptions() {
-        System.out.println("1) Make a Room Reservation");
+        System.out.println("1) Room Reservations");
         System.out.println("2) Make a Restaurant Reservation");
         System.out.println("3) Make a Parking Reservation");
         System.out.println("4) View All Rooms");
@@ -91,6 +91,27 @@ public class Menu {
                 case 2 -> reportService.generateBookingSummaryReport();
                 case 3 -> reportService.generateFinancialReport();
                 case 4 -> reportMenuLoop = false; // Exit report menu
+                default -> System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
+    private static void displayRoomMenu() {
+        boolean roomMenuLoop = true;
+        while (roomMenuLoop) {
+            System.out.println("----------------------------------------------------");
+            System.out.println("Room Reservation Options:");
+            System.out.println("1) Reserve a Room");
+            System.out.println("2) Remove a Room Reservation");
+            System.out.println("3) Back to Main Menu");
+            System.out.println("----------------------------------------------------");
+            System.out.print("Select an option [1-3]: ");
+
+            int roomChoice = getInput();
+
+            switch (roomChoice) {
+                case 1 -> roomService.handleRoomBooking();
+                case 2 -> roomService.removeRoomBooking();
+                case 3 -> roomMenuLoop = false;
                 default -> System.out.println("Invalid option. Please try again.");
             }
         }

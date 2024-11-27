@@ -12,20 +12,26 @@ public final class RestaurantBooking extends AbstractBooking {
     private final String restaurantBookingID;
     private final MealEnum mealType;
     private final Table table;
+    private final double cost;
+    private int numberOfPeople;
 
-    public RestaurantBooking(Customer customer, LocalDateTime startTime, LocalDateTime endTime, Table table) throws BookingDateArgumentException {
+    public RestaurantBooking(Customer customer, LocalDateTime startTime, LocalDateTime endTime, Table table, int numberOfPeople) throws BookingDateArgumentException {
         super(customer, startTime, endTime);
         this.mealType = determineMealType(startTime);
         this.restaurantBookingID = generateBookingID();
         this.table = table;
+        this.numberOfPeople = numberOfPeople;
+        this.cost = calculateCost();
+
     }
 
     public double calculateCost() {
-        return switch (mealType) {
+        double rate = switch (getMealType()) {
             case BREAKFAST -> 20.0;
             case LUNCH -> 30.0;
             case DINNER -> 40.0;
         };
+        return rate * getNumberOfPeople();
     }
 
     private MealEnum determineMealType(LocalDateTime startTime) {
@@ -42,6 +48,8 @@ public final class RestaurantBooking extends AbstractBooking {
     public MealEnum getMealType() {
         return mealType;
     }
+    public double getCost() { return cost;}
+    public int getNumberOfPeople() {return numberOfPeople;}
 
     @Override
     public String generateBookingID() {
@@ -61,13 +69,15 @@ public final class RestaurantBooking extends AbstractBooking {
                         ConsoleColour.YELLOW + "Start Time: " + ConsoleColour.RESET + "%s\n" +
                         ConsoleColour.YELLOW + "End Time: " + ConsoleColour.RESET + "%s\n" +
                         ConsoleColour.PURPLE + "Table Number: " + ConsoleColour.RESET + "%d\n" +
-                        ConsoleColour.RED + "Booking ID: " + ConsoleColour.RESET + "%s\n",
+                        ConsoleColour.RED + "Booking ID: " + ConsoleColour.RESET + "%s\n" +
+                        ConsoleColour.WHITE_BOLD + "Cost: €" + ConsoleColour.RESET + "%.2f",
                 getCustomer().getName(),
                 getMealType(),
                 getBookingDateTimeStart(),
                 getBookingDateTimeEnd(),
                 table.getTableNumber(),
-                restaurantBookingID
+                restaurantBookingID,
+                getCost()
         );
     }
 

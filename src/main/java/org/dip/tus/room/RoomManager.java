@@ -80,4 +80,21 @@ public class RoomManager extends AbstractBookingManager<Room, RoomBooking> {
         }
         return totalCost;
     }
+
+    public double calculateCostForDates(Room room, LocalDateTime start, LocalDateTime end) {
+        long days = java.time.temporal.ChronoUnit.DAYS.between(start.toLocalDate(), end.toLocalDate());
+        double baseCost = room.getBaseCost();
+        double totalCost = 0;
+
+        LocalDateTime currentTime = start;
+        for (int i = 0; i < days; i++) {
+            double dailyRate = baseCost;
+            if (isWeekend(currentTime)) {
+                dailyRate *= 1.5;
+            }
+            totalCost += dailyRate;
+            currentTime = currentTime.plusDays(1);
+        }
+        return totalCost;
+    }
 }
