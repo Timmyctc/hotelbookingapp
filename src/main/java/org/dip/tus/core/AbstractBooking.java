@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 
 public abstract class AbstractBooking {
 
-    private int roomNumber;
     private Customer customer;
     private LocalDateTime bookingDateTimeStart;
     private LocalDateTime bookingDateTimeEnd;
@@ -25,10 +24,6 @@ public abstract class AbstractBooking {
 
     public Customer getCustomer() {
         return customer;
-    }
-
-    public void setRoomNumber(int roomNumber) {
-        this.roomNumber=roomNumber;
     }
 
     public LocalDateTime getBookingDateTimeStart() {

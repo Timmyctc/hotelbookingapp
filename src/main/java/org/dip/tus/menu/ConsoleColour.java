@@ -81,17 +81,10 @@ public enum ConsoleColour {
         this.colour = colour;
     }
 
-    /**
-     * Complexity: O(1) - Returning a known value
-     * @return current colour
-     */
     public String colour() {
         return this.colour;
     }
-    /**
-     * Complexity: 0(1) - Setting a value
-     *
-     */
+
     @Override
     public String toString() {
         return colour;

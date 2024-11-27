@@ -79,11 +79,9 @@ public class CustomerManager {
         System.out.println("+-----------------------+--------------------+" + ConsoleColour.RESET);
 
         for (Customer customer : customers) {
-            System.out.printf(ConsoleColour.CYAN + "| %-21s | %-18s |\n" + ConsoleColour.RESET,
-                    customer.getName(),
+            System.out.printf(ConsoleColour.CYAN + "| %-21s | %-18s |\n" + ConsoleColour.RESET, customer.getName(),
                     customer.getDateOfBirth().toString());
         }
-
         System.out.println(ConsoleColour.BLUE + "+--------------------------------------------+" + ConsoleColour.RESET);
     }
 }

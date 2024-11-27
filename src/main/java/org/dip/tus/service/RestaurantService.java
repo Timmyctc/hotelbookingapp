@@ -89,4 +89,8 @@ public final class RestaurantService {
                 .flatMap(room -> room.getAllBookings().stream())
                 .collect(Collectors.toList());
     }
+
+    public void removeRestaurantReservation() {
+
+    }
 }

@@ -73,5 +73,7 @@ public final class ParkingService {
                 .collect(Collectors.toList());
     }
 
+    public void removeParkingReservation() {
+    }
 }
 

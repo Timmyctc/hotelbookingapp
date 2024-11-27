@@ -66,20 +66,4 @@ public class InputHelper {
         }
         return dateTime;
     }
-
-    public static char parseChar(String prompt, char min, char max) {
-        char value;
-        while (true) {
-            System.out.print(prompt);
-            String input = scanner.nextLine().toUpperCase().trim();
-            if (input.length() == 1) {
-                value = input.charAt(0);
-                if (value >= min && value <= max) {
-                    return value;
-                }
-            }
-            System.out.println("Invalid input. Please enter a character between " + min + " and " + max + ".");
-        }
-    }
-
 }
