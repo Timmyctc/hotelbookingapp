@@ -1,13 +1,10 @@
 package org.dip.tus.core;
 
 import org.dip.tus.customer.Customer;
-import org.dip.tus.room.RoomBooking;
-
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class AbstractBookingManager<E extends AbstractEntity<B>, B extends AbstractBooking> implements BookingManager<E> {
 

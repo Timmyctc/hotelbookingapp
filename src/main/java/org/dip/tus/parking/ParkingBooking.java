@@ -32,10 +32,6 @@ public final class ParkingBooking extends AbstractBooking {
         return cost;
     }
 
-    public ParkingSpot getAvailableParkingSpotForDateTime(LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        return parkingLotManager.getAvailableParkingSpotForDateTime(startDateTime, endDateTime);
-    }
-
     public ParkingSpot getParkingSpot() {
         return parkingSpot;
     }
@@ -56,8 +52,8 @@ public final class ParkingBooking extends AbstractBooking {
                         ConsoleColour.PURPLE + "Parking Spot: " + ConsoleColour.RESET + "%s\n" +
                         ConsoleColour.CYAN + "Booking Start: " + ConsoleColour.RESET + "%s\n" +
                         ConsoleColour.CYAN + "Booking End: " + ConsoleColour.RESET + "%s\n" +
-                        ConsoleColour.RED + "Booking ID: " + ConsoleColour.RESET + "%\n" +
-                        ConsoleColour.WHITE + "Cost: " + ConsoleColour.RESET + "%.2f\n",
+                        ConsoleColour.RED + "Booking ID: " + ConsoleColour.RESET + "%s\n" +
+                        ConsoleColour.WHITE + "Cost: €" + ConsoleColour.RESET + "%.2f\n",
                 getCustomer().getName(),
                 registration,
                 parkingSpot.getId(),

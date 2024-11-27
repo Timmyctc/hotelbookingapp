@@ -12,10 +12,14 @@ public class ParkingSpot extends AbstractEntity<ParkingBooking> {
     private char section;
     private int spotNumber;
     private final double costPerHour = 5.0;
+    private final double costPerDay = 25;
 
     public double calculateCost(LocalDateTime start, LocalDateTime end) {
         long hours = java.time.Duration.between(start, end).toHours();
-        return hours * costPerHour;
+        if (hours >= 5) {
+            return (costPerDay * (hours/24));
+        }
+        return costPerHour * hours;
     }
 
     public ParkingSpot(char section, int spotNumber) {

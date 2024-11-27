@@ -3,7 +3,6 @@ package org.dip.tus.customer;
 import org.dip.tus.menu.ConsoleColour;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 public class Customer {
     private final String name;

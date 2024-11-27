@@ -9,6 +9,7 @@ import org.dip.tus.service.ParkingService;
 import org.dip.tus.service.ReportService;
 import org.dip.tus.service.RestaurantService;
 import org.dip.tus.service.RoomService;
+import org.dip.tus.util.InputHelper;
 
 import java.util.Scanner;
 
@@ -70,20 +71,22 @@ public class Menu {
         while (reportMenuLoop) {
             System.out.println("----------------------------------------------------");
             System.out.println("Report Options:");
-            System.out.println("1) Customer Booking Report");
-            System.out.println("2) Booking Summary Report");
-            System.out.println("3) Financial Report");
-            System.out.println("4) Back to Main Menu");
+            System.out.println("1) All Customers Booking Report");
+            System.out.println("2) Customer Booking Report per Customer");
+            System.out.println("3) Booking Summary Report");
+            System.out.println("4) Financial Report");
+            System.out.println("5) Back to Main Menu");
             System.out.println("----------------------------------------------------");
-            System.out.print("Select an option [1-4]: ");
+            System.out.print("Select an option [1-5]: ");
 
             int reportChoice = getInput();
 
             switch (reportChoice) {
                 case 1 -> reportService.generateCustomerBookingReport(customerManager.getCustomerList().toArray(new Customer[0]));
-                case 2 -> reportService.generateBookingSummaryReport();
-                case 3 -> reportService.generateFinancialReport();
-                case 4 -> reportMenuLoop = false;
+                case 2 -> reportService.generateCustomerBookingReport(customerManager.getCustomer(InputHelper.parseString("Enter customer name: "), InputHelper.parseDate("Enter customer date of birth: ")));
+                case 3 -> reportService.generateBookingSummaryReport();
+                case 4 -> reportService.generateFinancialReport();
+                case 5 -> reportMenuLoop = false;
                 default -> System.out.println("Invalid option. Please try again.");
             }
         }

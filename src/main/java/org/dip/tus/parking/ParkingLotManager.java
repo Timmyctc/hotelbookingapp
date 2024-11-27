@@ -121,18 +121,9 @@ public class ParkingLotManager extends AbstractBookingManager<ParkingSpot, Parki
     }
 
     public double calculateCostForBooking(ParkingBooking parkingBooking) {
-        long days = java.time.Duration.between(parkingBooking.getBookingDateTimeStart(), parkingBooking.getBookingDateTimeEnd()).toDays();
         ParkingSpot parkingSpot = parkingBooking.getParkingSpot();
-        double baseCost = parkingSpot.getCostPerHour();
-        double totalCost = 0;
+        return parkingSpot.calculateCost(parkingBooking.getBookingDateTimeStart(),parkingBooking.getBookingDateTimeEnd());
 
-        LocalDateTime currentTime = parkingBooking.getBookingDateTimeStart();
-        for (int i = 0; i < days; i++) {
-            double dailyRate = baseCost;
-            totalCost += dailyRate;
-            currentTime = currentTime.plusDays(1);
-        }
-        return totalCost;
     }
 
     @Override

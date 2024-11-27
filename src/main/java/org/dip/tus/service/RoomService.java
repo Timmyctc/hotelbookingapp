@@ -1,9 +1,9 @@
 package org.dip.tus.service;
 
+import org.dip.tus.core.BookingDisplay;
 import org.dip.tus.customer.Customer;
 import org.dip.tus.customer.CustomerManager;
 import org.dip.tus.exception.BookingDateArgumentException;
-import org.dip.tus.menu.ConsoleColour;
 import org.dip.tus.room.Room;
 import org.dip.tus.room.RoomBooking;
 import org.dip.tus.room.RoomManager;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class RoomService {
+public final class RoomService implements BookingDisplay<RoomBooking> {
 
     private final RoomManager roomManager = RoomManager.getInstance();
     private final CustomerManager customerManager = CustomerManager.getInstance();
@@ -105,20 +105,6 @@ public final class RoomService {
         }
     }
 
-    private void displayBookingsPerCustomer(List<RoomBooking> customerBookings) {
-         System.out.println(ConsoleColour.BLUE + "+-----+----------------------------------------+");
-        System.out.println("| No. | Booking Details                        |");
-        System.out.println("+-----+----------------------------------------+" + ConsoleColour.RESET);
-
-        int index = 1;
-        for (RoomBooking roomBooking : customerBookings) {
-            System.out.printf(ConsoleColour.GREEN + "| %-3d | %-38s |\n" + ConsoleColour.RESET,
-                    index++,
-                    roomBooking.toString());
-        }
-        System.out.println(ConsoleColour.BLUE + "+-----+----------------------------------------+" + ConsoleColour.RESET);
-    }
-
     public void removeRoomBooking() {
         String customerName = "";
         while (customerName.isBlank()) {
@@ -133,7 +119,7 @@ public final class RoomService {
             System.out.println("No Bookings for this customer.");
             return;
         }
-        displayBookingsPerCustomer(customerBookings);
+        displayBookings(customerBookings);
 
         int bookingIndexToRemove = 0;
         while(bookingIndexToRemove <= 0 || bookingIndexToRemove > customerBookings.size()) {

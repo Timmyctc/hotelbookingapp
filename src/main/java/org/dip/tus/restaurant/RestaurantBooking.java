@@ -34,6 +34,10 @@ public final class RestaurantBooking extends AbstractBooking {
         return rate * getNumberOfPeople();
     }
 
+    public Table getTable() {
+        return table;
+    }
+
     private MealEnum determineMealType(LocalDateTime startTime) {
         int hour = startTime.getHour();
         if (hour < 12) {

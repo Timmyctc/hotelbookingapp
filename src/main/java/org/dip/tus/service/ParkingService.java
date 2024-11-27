@@ -1,5 +1,6 @@
 package org.dip.tus.service;
 
+import org.dip.tus.core.BookingDisplay;
 import org.dip.tus.customer.Customer;
 import org.dip.tus.customer.CustomerManager;
 import org.dip.tus.exception.BookingDateArgumentException;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class ParkingService {
+public final class ParkingService implements BookingDisplay<ParkingBooking> {
 
     private final ParkingLotManager parkingLotManager = ParkingLotManager.getInstance();
     private final CustomerManager customerManager = CustomerManager.getInstance();
@@ -68,6 +69,35 @@ public final class ParkingService {
     }
 
     public void removeParkingReservation() {
+        String customerName = "";
+        while (customerName.isBlank()) {
+            customerName = InputHelper.parseString("Enter name of customer who made the reservation: ");
+            if (customerName.isBlank()) System.out.println("Name cannot be blank");
+        }
+        LocalDate dob = InputHelper.parseDate("Enter customer date of birth (YYYY-MM-DD): ");
+
+        Customer customer = customerManager.getCustomer(customerName, dob);
+        List<ParkingBooking> customerBookings = parkingLotManager.getAllBookingsForCustomer(customer);
+        if (customerBookings.isEmpty()) {
+            System.out.println("No bookings found for this customer.");
+            return;
+        }
+
+        displayBookings(customerBookings);
+
+        int bookingIndexToRemove = 0;
+        while (bookingIndexToRemove <= 0 || bookingIndexToRemove > customerBookings.size()) {
+            bookingIndexToRemove = InputHelper.parseInt("Enter the number of the booking to remove: ");
+            if (bookingIndexToRemove <= 0 || bookingIndexToRemove > customerBookings.size()) {
+                System.out.println("Invalid index. Please try again.");
+            }
+        }
+
+        ParkingBooking bookingToRemove = customerBookings.get(bookingIndexToRemove - 1);
+        parkingLotManager.removeBookingFromEntity(bookingToRemove.getParkingSpot().getId(), bookingToRemove);
+        System.out.println("Successfully removed the booking at index " + bookingIndexToRemove);
     }
+
+
 }
 
