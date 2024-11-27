@@ -13,6 +13,7 @@ public final class ParkingBooking extends AbstractBooking {
     private ParkingLotManager parkingLotManager = ParkingLotManager.getInstance();
     private String parkingBookingID;
     private ParkingSpot parkingSpot;
+    private double cost;
 
     public ParkingBooking(Customer customer, LocalDateTime startDateTime,
                           LocalDateTime endDateTime, String registration, ParkingSpot parkingSpot) throws BookingDateArgumentException {
@@ -20,6 +21,15 @@ public final class ParkingBooking extends AbstractBooking {
         this.registration = registration;
         this.parkingBookingID = generateBookingID();
         this.parkingSpot=parkingSpot;
+        this.cost = calculateCost();
+    }
+
+    private double calculateCost() {
+        return getParkingSpot().calculateCost(getBookingDateTimeStart(), getBookingDateTimeEnd());
+    }
+
+    public double getCost() {
+        return cost;
     }
 
     public ParkingSpot getAvailableParkingSpotForDateTime(LocalDateTime startDateTime, LocalDateTime endDateTime) {
@@ -46,13 +56,15 @@ public final class ParkingBooking extends AbstractBooking {
                         ConsoleColour.PURPLE + "Parking Spot: " + ConsoleColour.RESET + "%s\n" +
                         ConsoleColour.CYAN + "Booking Start: " + ConsoleColour.RESET + "%s\n" +
                         ConsoleColour.CYAN + "Booking End: " + ConsoleColour.RESET + "%s\n" +
-                        ConsoleColour.RED + "Booking ID: " + ConsoleColour.RESET + "%s",
+                        ConsoleColour.RED + "Booking ID: " + ConsoleColour.RESET + "%\n" +
+                        ConsoleColour.WHITE + "Cost: " + ConsoleColour.RESET + "%.2f\n",
                 getCustomer().getName(),
                 registration,
                 parkingSpot.getId(),
                 getBookingDateTimeStart(),
                 getBookingDateTimeEnd(),
-                parkingBookingID
+                parkingBookingID,
+                getCost()
         );
     }
 

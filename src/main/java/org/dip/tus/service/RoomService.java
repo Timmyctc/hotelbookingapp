@@ -129,7 +129,10 @@ public final class RoomService {
 
         Customer customer = customerManager.getCustomer(customerName, dob);
         List<RoomBooking> customerBookings = roomManager.getAllBookingsForCustomer(customer);
-        if(customerBookings.isEmpty()) return;
+        if(customerBookings.isEmpty()) {
+            System.out.println("No Bookings for this customer.");
+            return;
+        }
         displayBookingsPerCustomer(customerBookings);
 
         int bookingIndexToRemove = 0;

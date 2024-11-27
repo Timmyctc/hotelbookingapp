@@ -51,7 +51,7 @@ public final class ParkingService {
         try {
             ParkingBooking booking = new ParkingBooking(customer, startTime, endTime, vehicleRegistration, availableSpot);
             if (parkingLotManager.addBookingToEntity(availableSpot.getId(), booking)) {
-                System.out.println("Parking reservation successful: " + booking);
+                System.out.println("Parking reservation successful:\n" + booking);
             } else {
                 System.out.println("Reservation failed due to a conflict.");
             }
@@ -59,13 +59,7 @@ public final class ParkingService {
             System.out.println("Reservation error: " + e.getMessage());
         }
     }
-    public List<ParkingBooking> getAllBookingsForCustomer(Customer customer) {
-        return parkingLotManager.getAllEntities()
-                .stream()
-                .flatMap(room -> room.getAllBookings().stream())
-                .filter(booking -> booking.getCustomer().equals(customer))
-                .collect(Collectors.toList());
-    }
+
     public List<ParkingBooking> getAllBookings() {
         return parkingLotManager.getAllEntities()
                 .stream()

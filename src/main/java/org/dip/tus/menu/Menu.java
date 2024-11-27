@@ -36,7 +36,7 @@ public class Menu {
             switch (choice) {
                 case 1 -> displaySubMenu("Room", roomSubMenuHandler());
                 case 2 -> displaySubMenu("Table", restaurantSubMenuHandler());
-                case 3 -> displaySubMenu("Parking", parkingSubMenuHandler());
+                case 3 -> displaySubMenu("Parking Spot", parkingSubMenuHandler());
                 case 4 -> viewAllCustomers();
                 case 5 -> displayReportMenu();
                 case 6 -> {

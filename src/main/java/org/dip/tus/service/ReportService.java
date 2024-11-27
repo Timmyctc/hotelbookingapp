@@ -1,6 +1,5 @@
 package org.dip.tus.service;
 
-import org.dip.tus.core.AbstractBooking;
 import org.dip.tus.customer.Customer;
 import org.dip.tus.customer.CustomerManager;
 import org.dip.tus.menu.ConsoleColour;
@@ -11,7 +10,7 @@ import org.dip.tus.restaurant.RestaurantManager;
 import org.dip.tus.room.RoomBooking;
 import org.dip.tus.room.RoomManager;
 
-import java.time.LocalDateTime;
+
 import java.util.List;
 
 public class ReportService {
@@ -22,7 +21,6 @@ public class ReportService {
     private static final RestaurantManager restaurantManager = RestaurantManager.getInstance();
     private static final RoomService roomService = RoomService.getInstance();
     private static final RoomManager roomManager = RoomManager.getInstance();
-    private static final CustomerManager customerManager = CustomerManager.getInstance();
     private static final ParkingLotManager parkingLotManager = ParkingLotManager.getInstance();
 
     private ReportService() {}

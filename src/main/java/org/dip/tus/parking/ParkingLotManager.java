@@ -7,6 +7,7 @@ import org.dip.tus.menu.ConsoleColour;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ParkingLotManager extends AbstractBookingManager<ParkingSpot, ParkingBooking> {
@@ -136,6 +137,10 @@ public class ParkingLotManager extends AbstractBookingManager<ParkingSpot, Parki
 
     @Override
     public List<ParkingBooking> getAllBookingsForCustomer(Customer customer) {
-        return List.of();
+        return  getAllEntities()
+                .stream()
+                .flatMap(room -> room.getAllBookings().stream())
+                .filter(booking -> booking.getCustomer().equals(customer))
+                .collect(Collectors.toList());
     }
 }
