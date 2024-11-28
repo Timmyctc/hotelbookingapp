@@ -4,29 +4,25 @@ import org.dip.tus.menu.ConsoleColour;
 
 import java.time.LocalDate;
 
-public class Customer {
-    private final String name;
-    private final LocalDate dateOfBirth;
+/**
+ * Represents a customer with a name and date of birth.
+ */
+public record Customer(String name, LocalDate dateOfBirth) {
 
-    protected Customer(String name, LocalDate dateOfBirth) {
-        this.name = name;
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Customer customer = (Customer) o;
-        return name.equalsIgnoreCase(customer.name) && dateOfBirth.equals(customer.dateOfBirth);
+    /**
+     * Constructs a new {@code Customer} record.
+     *
+     * @param name        the name of the customer.
+     * @param dateOfBirth the date of birth of the customer.
+     * @throws IllegalArgumentException if the name is blank or dateOfBirth is null.
+     */
+    public Customer {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Name cannot be null or blank.");
+        }
+        if (dateOfBirth == null) {
+            throw new IllegalArgumentException("Date of Birth cannot be null.");
+        }
     }
 
     @Override
@@ -39,5 +35,4 @@ public class Customer {
                 dateOfBirth
         );
     }
-
 }

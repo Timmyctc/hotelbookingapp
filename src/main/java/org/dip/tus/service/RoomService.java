@@ -4,6 +4,7 @@ import org.dip.tus.core.BookingDisplay;
 import org.dip.tus.customer.Customer;
 import org.dip.tus.customer.CustomerManager;
 import org.dip.tus.exception.BookingDateArgumentException;
+import org.dip.tus.menu.ConsoleColour;
 import org.dip.tus.room.Room;
 import org.dip.tus.room.RoomBooking;
 import org.dip.tus.room.RoomManager;
@@ -133,7 +134,9 @@ public final class RoomService implements BookingDisplay<RoomBooking> {
         Customer customer = customerManager.getCustomer(customerName, dob);
         List<RoomBooking> customerBookings = roomManager.getAllBookingsForCustomer(customer);
         if (customerBookings.isEmpty()) {
+            System.out.println(ConsoleColour.RED);
             System.out.println("No Bookings for this customer.");
+            System.out.println(ConsoleColour.RESET);
             return;
         }
         displayBookings(customerBookings);

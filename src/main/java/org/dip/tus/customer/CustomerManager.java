@@ -41,7 +41,7 @@ public class CustomerManager {
      * @return the existing or newly added customer.
      */
     public Customer addCustomer(Customer customer) {
-        String key = generateKey(customer.getName(), customer.getDateOfBirth());
+        String key = generateKey(customer.name(), customer.dateOfBirth());
         return customerRegistry.computeIfAbsent(key, k -> customer);
     }
 
@@ -65,7 +65,7 @@ public class CustomerManager {
      */
     public List<Customer> getCustomersByName(String name) {
         return customerRegistry.values().stream()
-                .filter(customer -> customer.getName().equalsIgnoreCase(name))
+                .filter(customer -> customer.name().equalsIgnoreCase(name))
                 .collect(Collectors.toList());
     }
 
@@ -112,8 +112,8 @@ public class CustomerManager {
         System.out.println("+-----------------------+--------------------+" + ConsoleColour.RESET);
 
         for (Customer customer : customers) {
-            System.out.printf(ConsoleColour.CYAN + "| %-21s | %-18s |\n" + ConsoleColour.RESET, customer.getName(),
-                    customer.getDateOfBirth().toString());
+            System.out.printf(ConsoleColour.CYAN + "| %-21s | %-18s |\n" + ConsoleColour.RESET, customer.name(),
+                    customer.dateOfBirth().toString());
         }
         System.out.println(ConsoleColour.BLUE + "+--------------------------------------------+" + ConsoleColour.RESET);
     }

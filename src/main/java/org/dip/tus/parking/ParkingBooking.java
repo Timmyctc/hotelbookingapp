@@ -69,7 +69,7 @@ public final class ParkingBooking extends AbstractBooking {
                         ConsoleColour.CYAN + "Booking End: " + ConsoleColour.RESET + "%s\n" +
                         ConsoleColour.RED + "Booking ID: " + ConsoleColour.RESET + "%s\n" +
                         ConsoleColour.WHITE + "Cost: €" + ConsoleColour.RESET + "%.2f\n",
-                getCustomer().getName(),
+                getCustomer().name(),
                 registration,
                 parkingSpot.getId(),
                 getBookingDateTimeStart(),

@@ -60,7 +60,7 @@ public abstract class AbstractBooking {
                         ConsoleColour.GREEN + "Customer: " + ConsoleColour.RESET + "%s\n" +
                         ConsoleColour.CYAN + "Booking Start: " + ConsoleColour.RESET + "%s\n" +
                         ConsoleColour.CYAN + "Booking End: " + ConsoleColour.RESET + "%s\n",
-                customer.getName(),
+                customer.name(),
                 bookingDateTimeStart,
                 bookingDateTimeEnd
         );

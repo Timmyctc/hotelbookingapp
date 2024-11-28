@@ -4,6 +4,7 @@ import org.dip.tus.core.BookingDisplay;
 import org.dip.tus.customer.Customer;
 import org.dip.tus.customer.CustomerManager;
 import org.dip.tus.exception.BookingDateArgumentException;
+import org.dip.tus.menu.ConsoleColour;
 import org.dip.tus.parking.ParkingBooking;
 import org.dip.tus.parking.ParkingLotManager;
 import org.dip.tus.parking.ParkingSpot;
@@ -97,7 +98,9 @@ public final class ParkingService implements BookingDisplay<ParkingBooking> {
         Customer customer = customerManager.getCustomer(customerName, dob);
         List<ParkingBooking> customerBookings = parkingLotManager.getAllBookingsForCustomer(customer);
         if (customerBookings.isEmpty()) {
+            System.out.println(ConsoleColour.RED);
             System.out.println("No bookings found for this customer.");
+            System.out.println(ConsoleColour.RESET);
             return;
         }
 

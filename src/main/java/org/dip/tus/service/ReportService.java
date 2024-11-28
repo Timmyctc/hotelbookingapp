@@ -51,8 +51,8 @@ public class ReportService {
                 System.out.println("No Customer by that name/dob");
                 break;
             }
-            System.out.println(ConsoleColour.BLUE + "Customer: " + customer.getName() +
-                    " (DOB: " + customer.getDateOfBirth() + ")" + ConsoleColour.RESET);
+            System.out.println(ConsoleColour.BLUE + "Customer: " + customer.name() +
+                    " (DOB: " + customer.dateOfBirth() + ")" + ConsoleColour.RESET);
 
             // Room Bookings
             List<RoomBooking> roomBookings = roomService.getAllBookingsForCustomer(customer);

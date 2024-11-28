@@ -111,7 +111,7 @@ public final class RestaurantBooking extends AbstractBooking {
                         ConsoleColour.PURPLE + "Table Number: " + ConsoleColour.RESET + "%d\n" +
                         ConsoleColour.RED + "Booking ID: " + ConsoleColour.RESET + "%s\n" +
                         ConsoleColour.WHITE_BOLD + "Cost: €" + ConsoleColour.RESET + "%.2f",
-                getCustomer().getName(),
+                getCustomer().name(),
                 getMealType(),
                 getBookingDateTimeStart(),
                 getBookingDateTimeEnd(),

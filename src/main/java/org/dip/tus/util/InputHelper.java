@@ -6,6 +6,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
+    /**
+    * Utility class to get various inputs from user
+    */
 public class InputHelper {
 
     private static final Scanner scanner = new Scanner(System.in);

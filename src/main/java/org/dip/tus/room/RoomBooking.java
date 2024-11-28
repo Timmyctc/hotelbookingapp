@@ -66,7 +66,7 @@ public final class RoomBooking extends AbstractBooking {
                         ConsoleColour.CYAN + "End DateTime: " + ConsoleColour.RESET + "%s\n" +
                         ConsoleColour.RED + "Booking ID: " + ConsoleColour.RESET + "%s\n" +
                         ConsoleColour.WHITE_BOLD + "Cost: €" + ConsoleColour.RESET +"%.2f\n",
-                getCustomer().getName(),
+                getCustomer().name(),
                 getRoomNumber(),
                 getBookingDateTimeStart(),
                 getBookingDateTimeEnd(),

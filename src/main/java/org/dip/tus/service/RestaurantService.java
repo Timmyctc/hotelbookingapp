@@ -4,6 +4,7 @@ import org.dip.tus.core.BookingDisplay;
 import org.dip.tus.customer.Customer;
 import org.dip.tus.customer.CustomerManager;
 import org.dip.tus.exception.BookingDateArgumentException;
+import org.dip.tus.menu.ConsoleColour;
 import org.dip.tus.restaurant.RestaurantBooking;
 import org.dip.tus.restaurant.RestaurantManager;
 import org.dip.tus.restaurant.Table;
@@ -128,7 +129,9 @@ public final class RestaurantService implements BookingDisplay<RestaurantBooking
         List<RestaurantBooking> customerBookings = restaurantManager.getAllBookingsForCustomer(customer);
 
         if (customerBookings.isEmpty()) {
+            System.out.println(ConsoleColour.RED);
             System.out.println("No Bookings for this customer.");
+            System.out.println(ConsoleColour.RESET);
             return;
         }
 
