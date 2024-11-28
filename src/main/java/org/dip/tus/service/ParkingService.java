@@ -14,6 +14,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Singleton Service class for handling parking reservations, cancellations, and queries.
+ * Implements {@link BookingDisplay} for displaying parking bookings.
+ */
 public final class ParkingService implements BookingDisplay<ParkingBooking> {
 
     private final ParkingLotManager parkingLotManager = ParkingLotManager.getInstance();
@@ -26,9 +30,13 @@ public final class ParkingService implements BookingDisplay<ParkingBooking> {
         return instance;
     }
 
+    /**
+     * Handles creating a new parking reservation for a customer.
+     * Prompts the user for customer details, vehicle information, and reservation timing.
+     */
     public void handleParkingReservation() {
         String customerName = InputHelper.parseString("Enter customer name: ");
-        LocalDate dob = InputHelper.parseDate("Enter customer date of birth (YYYY-MM-DD): ");
+        LocalDate dob = InputHelper.parseDateOfBirth("Enter customer date of birth (YYYY-MM-DD): ");
 
         String vehicleRegistration = InputHelper.parseString("Enter vehicle registration number: ");
 
@@ -39,12 +47,14 @@ public final class ParkingService implements BookingDisplay<ParkingBooking> {
                 System.out.println("Start time must be today or later. Please try again.");
             }
         }
+
         int duration;
         LocalDateTime endTime;
         do {
             duration = InputHelper.parseInt("Enter the parking duration in days: ");
             endTime = startTime.plusDays(duration);
         } while (duration < 1);
+
         Customer customer = customerManager.getCustomerOrAdd(customerName, dob);
 
         ParkingSpot availableSpot = parkingLotManager.getAvailableParkingSpotForDateTime(startTime, endTime);
@@ -61,6 +71,11 @@ public final class ParkingService implements BookingDisplay<ParkingBooking> {
         }
     }
 
+    /**
+     * Retrieves all parking bookings from the parking lot manager.
+     *
+     * @return a list of all parking bookings.
+     */
     public List<ParkingBooking> getAllBookings() {
         return parkingLotManager.getAllEntities()
                 .stream()
@@ -68,13 +83,16 @@ public final class ParkingService implements BookingDisplay<ParkingBooking> {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Handles the removal of a parking reservation for a specific customer.
+     */
     public void removeParkingReservation() {
         String customerName = "";
         while (customerName.isBlank()) {
             customerName = InputHelper.parseString("Enter name of customer who made the reservation: ");
             if (customerName.isBlank()) System.out.println("Name cannot be blank");
         }
-        LocalDate dob = InputHelper.parseDate("Enter customer date of birth (YYYY-MM-DD): ");
+        LocalDate dob = InputHelper.parseDateOfBirth("Enter customer date of birth (YYYY-MM-DD): ");
 
         Customer customer = customerManager.getCustomer(customerName, dob);
         List<ParkingBooking> customerBookings = parkingLotManager.getAllBookingsForCustomer(customer);
@@ -97,7 +115,5 @@ public final class ParkingService implements BookingDisplay<ParkingBooking> {
         parkingLotManager.removeBookingFromEntity(bookingToRemove.getParkingSpot().getId(), bookingToRemove);
         System.out.println("Successfully removed the booking at index " + bookingIndexToRemove);
     }
-
-
 }
 

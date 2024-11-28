@@ -9,14 +9,13 @@ import org.dip.tus.restaurant.RestaurantBooking;
 import org.dip.tus.restaurant.RestaurantManager;
 import org.dip.tus.room.RoomBooking;
 import org.dip.tus.room.RoomManager;
-import org.dip.tus.util.InputHelper;
 
-
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
+/**
+ * Singleton Service class for generating various reports related to customers, bookings, and finances.
+ */
 public class ReportService {
 
     private static final ReportService instance = new ReportService();
@@ -36,15 +35,19 @@ public class ReportService {
     }
 
     /**
-     * Outputs a report of all customers and their respective bookings (room, parking, restaurant)
+     * Outputs a detailed report of all customers and their respective bookings (room, parking, and restaurant).
+     * Also calculates the total expenditure for all customers.
+     * Var args either one or many customers
+     *
+     * @param customers Customers for whom the booking report will be generated.
      */
     public void generateCustomerBookingReport(Customer... customers) {
-         System.out.println("Customer Booking Report:");
+        System.out.println("Customer Booking Report:");
         System.out.println("----------------------------------------------------");
         double totalExpenditure = 0;
 
         for (Customer customer : customers) {
-            if(Objects.isNull(customer)) {
+            if (Objects.isNull(customer)) {
                 System.out.println("No Customer by that name/dob");
                 break;
             }
@@ -96,9 +99,8 @@ public class ReportService {
         System.out.println(ConsoleColour.RED + "Total Expenditure: €" + totalExpenditure + ConsoleColour.RESET);
     }
 
-
     /**
-     * Outputs a summary of all bookings by type
+     * Outputs a summary report of all bookings categorized by type (Room, Parking, and Restaurant).
      */
     public void generateBookingSummaryReport() {
         System.out.println("Booking Summary Report:");
@@ -120,7 +122,7 @@ public class ReportService {
     }
 
     /**
-     * Outputs a financial report for all bookings and total revenue
+     * Outputs a financial report displaying the total revenue generated from room, parking, and restaurant bookings.
      */
     public void generateFinancialReport() {
         System.out.println("Financial Report:");
@@ -144,14 +146,5 @@ public class ReportService {
         double totalRevenue = roomRevenue + parkingRevenue + restaurantRevenue;
         System.out.println(ConsoleColour.BLUE + "Total Revenue: €" + totalRevenue + ConsoleColour.RESET);
         System.out.println("----------------------------------------------------");
-    }
-
-    public Optional<Customer> getCustomerNameOrNull() {
-        String name = InputHelper.parseString("Enter customer name or leave empty to return All customer record: ");
-        if (name.isEmpty()) return Optional.empty();
-        else {
-            LocalDate dob = InputHelper.parseDate("Enter customer date of birth: ");
-            return Optional.ofNullable(customerManager.getCustomer(name, dob));
-        }
     }
 }

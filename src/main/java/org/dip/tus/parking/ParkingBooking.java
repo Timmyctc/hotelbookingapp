@@ -7,6 +7,9 @@ import org.dip.tus.menu.ConsoleColour;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents a parking booking made by a customer for a specific parking spot and time period.
+ */
 public final class ParkingBooking extends AbstractBooking {
 
     private String registration;
@@ -15,12 +18,23 @@ public final class ParkingBooking extends AbstractBooking {
     private ParkingSpot parkingSpot;
     private double cost;
 
+    /**
+     * Constructs a ParkingBooking instance.
+     *
+     * @param customer       The customer making the booking.
+     * @param startDateTime  The start date and time of the booking.
+     * @param endDateTime    The end date and time of the booking.
+     * @param registration   The vehicle's registration number.
+     * @param parkingSpot    The parking spot assigned to the booking.
+     * @throws BookingDateArgumentException if the start date is not before the end date.
+     */
     public ParkingBooking(Customer customer, LocalDateTime startDateTime,
-                          LocalDateTime endDateTime, String registration, ParkingSpot parkingSpot) throws BookingDateArgumentException {
+                          LocalDateTime endDateTime, String registration, ParkingSpot parkingSpot)
+            throws BookingDateArgumentException {
         super(customer, startDateTime, endDateTime);
         this.registration = registration;
         this.parkingBookingID = generateBookingID();
-        this.parkingSpot=parkingSpot;
+        this.parkingSpot = parkingSpot;
         this.cost = calculateCost();
     }
 
@@ -40,9 +54,10 @@ public final class ParkingBooking extends AbstractBooking {
     public String generateBookingID() {
         return new StringBuilder()
                 .append("P")
-                .append(getCustomer().hashCode()  + getBookingDateTimeStart().hashCode())
+                .append(getCustomer().hashCode() + getBookingDateTimeStart().hashCode())
                 .toString();
     }
+
     @Override
     public String toString() {
         return String.format(
@@ -63,7 +78,4 @@ public final class ParkingBooking extends AbstractBooking {
                 getCost()
         );
     }
-
-
 }
-

@@ -6,11 +6,23 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.PriorityQueue;
 
+/**
+ * Represents a hotel room that can be booked.
+ */
 public class Room extends AbstractEntity<RoomBooking> {
 
     private final int roomNumber;
     private final RoomType roomType;
 
+    /**
+     * Constructs a Room object with the specified room number and type.
+     * initialises the priority Queue with a comparator that compares bookings based on the start to ensure
+     * chronological order
+     *
+     * @param roomNumber the room number (must be between 1 and 100).
+     * @param roomType   the type of the room (SINGLE, DOUBLE, QUEEN, KING).
+     * @throws IllegalArgumentException if the room number is not within the valid range.
+     */
     protected Room(int roomNumber, RoomType roomType) {
         if (roomNumber < 1 || roomNumber > 100) {
             throw new IllegalArgumentException("Invalid Room Number");
@@ -24,10 +36,20 @@ public class Room extends AbstractEntity<RoomBooking> {
         return roomNumber;
     }
 
+    /**
+     * Retrieves the room type.
+     *
+     * @return the room type (SINGLE, DOUBLE, QUEEN, KING).
+     */
     public RoomType getRoomType() {
         return roomType;
     }
 
+    /**
+     * Gets the base cost of the room based on its type.
+     *
+     * @return the base cost of the room.
+     */
     public double getBaseCost() {
         return switch (getRoomType()) {
             case SINGLE -> 80.0;

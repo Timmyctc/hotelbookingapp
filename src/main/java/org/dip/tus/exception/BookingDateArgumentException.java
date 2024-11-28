@@ -1,5 +1,9 @@
 package org.dip.tus.exception;
 
+/**
+ * Exception thrown when invalid booking dates are provided.
+ */
+
 public class BookingDateArgumentException extends Exception {
 
     public BookingDateArgumentException() {

@@ -7,6 +7,10 @@ import org.dip.tus.menu.ConsoleColour;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents a restaurant booking made by a customer.
+ * booking includes details such as the meal type, table, cost, and booking times.
+ */
 public final class RestaurantBooking extends AbstractBooking {
 
     private final String restaurantBookingID;
@@ -15,6 +19,16 @@ public final class RestaurantBooking extends AbstractBooking {
     private final double cost;
     private int numberOfPeople;
 
+    /**
+     * Constructs a new RestaurantBooking.
+     *
+     * @param customer       The customer making the booking.
+     * @param startTime      The start time of the booking.
+     * @param endTime        The end time of the booking.
+     * @param table          The table reserved for the booking.
+     * @param numberOfPeople The number of people for the booking.
+     * @throws BookingDateArgumentException If the booking start time is after or equal to the end time.
+     */
     public RestaurantBooking(Customer customer, LocalDateTime startTime, LocalDateTime endTime, Table table, int numberOfPeople) throws BookingDateArgumentException {
         super(customer, startTime, endTime);
         this.mealType = determineMealType(startTime);
@@ -22,9 +36,13 @@ public final class RestaurantBooking extends AbstractBooking {
         this.table = table;
         this.numberOfPeople = numberOfPeople;
         this.cost = calculateCost();
-
     }
 
+    /**
+     * Calculates the total cost of the booking based on the meal type and number of people.
+     *
+     * @return The total cost of the booking.
+     */
     public double calculateCost() {
         double rate = switch (getMealType()) {
             case BREAKFAST -> 20.0;
@@ -34,10 +52,12 @@ public final class RestaurantBooking extends AbstractBooking {
         return rate * getNumberOfPeople();
     }
 
-    public Table getTable() {
-        return table;
-    }
-
+    /**
+     * Determines the type of meal (e.g., Breakfast, Lunch, Dinner) based on the booking start time.
+     *
+     * @param startTime The start time of the booking.
+     * @return The meal type associated with the booking.
+     */
     private MealEnum determineMealType(LocalDateTime startTime) {
         int hour = startTime.getHour();
         if (hour < 12) {
@@ -49,12 +69,11 @@ public final class RestaurantBooking extends AbstractBooking {
         }
     }
 
-    public MealEnum getMealType() {
-        return mealType;
-    }
-    public double getCost() { return cost;}
-    public int getNumberOfPeople() {return numberOfPeople;}
-
+    /**
+     * Generates a unique booking ID based on the meal type and object hash.
+     *
+     * @return A unique booking ID.
+     */
     @Override
     public String generateBookingID() {
         return switch (mealType) {
@@ -63,6 +82,23 @@ public final class RestaurantBooking extends AbstractBooking {
             case DINNER -> "D" + this.hashCode();
         };
     }
+
+    public MealEnum getMealType() {
+        return mealType;
+    }
+
+    public Table getTable() {
+        return table;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public int getNumberOfPeople() {
+        return numberOfPeople;
+    }
+
 
     @Override
     public String toString() {
@@ -84,5 +120,4 @@ public final class RestaurantBooking extends AbstractBooking {
                 getCost()
         );
     }
-
 }

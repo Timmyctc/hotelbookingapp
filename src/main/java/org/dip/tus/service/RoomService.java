@@ -15,18 +15,27 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Singleton service class for managing room bookings, including creating, retrieving, and removing reservations.
+ */
 public final class RoomService implements BookingDisplay<RoomBooking> {
 
     private final RoomManager roomManager = RoomManager.getInstance();
     private final CustomerManager customerManager = CustomerManager.getInstance();
     private static final RoomService instance = new RoomService();
 
-    private RoomService(){}
+    private RoomService() {}
 
     public static RoomService getInstance() {
         return instance;
     }
 
+    /**
+     * Retrieves all room bookings for a given customer.
+     *
+     * @param customer The customer whose bookings are to be retrieved.
+     * @return A list of {@link RoomBooking} associated with the customer.
+     */
     public List<RoomBooking> getAllBookingsForCustomer(Customer customer) {
         return roomManager.getAllEntities()
                 .stream()
@@ -42,13 +51,17 @@ public final class RoomService implements BookingDisplay<RoomBooking> {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Handles the process of booking a room for a customer.
+     * Validates input, checks availability, and confirms the booking.
+     */
     public void handleRoomBooking() {
         String customerName = "";
         while (customerName.isBlank()) {
             customerName = InputHelper.parseString("Enter customer name: ");
-            if(customerName.isBlank()) System.out.println("Name cannot be blank");
+            if (customerName.isBlank()) System.out.println("Name cannot be blank");
         }
-        LocalDate dob = InputHelper.parseDate("Enter customer date of birth (YYYY-MM-DD): ");
+        LocalDate dob = InputHelper.parseDateOfBirth("Enter customer date of birth (YYYY-MM-DD): ");
 
         RoomType roomType = InputHelper.parseRoomEnum("Enter room type (SINGLE, DOUBLE, KING, QUEEN): ");
 
@@ -93,7 +106,7 @@ public final class RoomService implements BookingDisplay<RoomBooking> {
             try {
                 RoomBooking booking = new RoomBooking(customer,
                         roomManager.findEntityById(String.valueOf(selectedRoomNumber)),
-                        bookingStart, bookingEnd, roomManager.calculateCostForDates(selectedRoom,bookingStart,bookingEnd) );
+                        bookingStart, bookingEnd, roomManager.calculateCostForDates(selectedRoom, bookingStart, bookingEnd));
                 if (roomManager.addBookingToEntity(String.valueOf(selectedRoomNumber), booking)) {
                     System.out.println("Room booking successful: \n" + booking);
                 } else {
@@ -105,29 +118,32 @@ public final class RoomService implements BookingDisplay<RoomBooking> {
         }
     }
 
+    /**
+     * Handles the removal of a room booking.
+     * Prompts the user for customer details and allows selection of the booking to be removed.
+     */
     public void removeRoomBooking() {
         String customerName = "";
         while (customerName.isBlank()) {
             customerName = InputHelper.parseString("Enter name of customer who made reservation: ");
             if (customerName.isBlank()) System.out.println("Name cannot be blank");
         }
-        LocalDate dob = InputHelper.parseDate("Enter customer date of birth (YYYY-MM-DD): ");
+        LocalDate dob = InputHelper.parseDateOfBirth("Enter customer date of birth (YYYY-MM-DD): ");
 
         Customer customer = customerManager.getCustomer(customerName, dob);
         List<RoomBooking> customerBookings = roomManager.getAllBookingsForCustomer(customer);
-        if(customerBookings.isEmpty()) {
+        if (customerBookings.isEmpty()) {
             System.out.println("No Bookings for this customer.");
             return;
         }
         displayBookings(customerBookings);
 
         int bookingIndexToRemove = 0;
-        while(bookingIndexToRemove <= 0 || bookingIndexToRemove > customerBookings.size()) {
+        while (bookingIndexToRemove <= 0 || bookingIndexToRemove > customerBookings.size()) {
             bookingIndexToRemove = InputHelper.parseInt("Enter number of booking to remove: ");
-            if(bookingIndexToRemove < 0 || bookingIndexToRemove > customerBookings.size()) System.out.println("Invalid Index");
+            if (bookingIndexToRemove <= 0 || bookingIndexToRemove > customerBookings.size()) System.out.println("Invalid Index");
         }
-        roomManager.removeBookingFromEntity(customerBookings.get(bookingIndexToRemove-1).getRoom().getId(),customerBookings.get(bookingIndexToRemove-1));
+        roomManager.removeBookingFromEntity(customerBookings.get(bookingIndexToRemove - 1).getRoom().getId(), customerBookings.get(bookingIndexToRemove - 1));
         System.out.println("Removed the Booking at " + bookingIndexToRemove);
     }
-
 }

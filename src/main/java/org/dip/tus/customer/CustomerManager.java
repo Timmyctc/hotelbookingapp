@@ -6,27 +6,52 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Singleton class that manages the registration and retrieval of customers.
+ */
 public class CustomerManager {
 
     private static final CustomerManager instance = new CustomerManager();
     private final Map<String, Customer> customerRegistry = new HashMap<>();
 
+
     private CustomerManager() {
     }
+
 
     public static CustomerManager getInstance() {
         return instance;
     }
 
+    /**
+     * Generates a unique key for a customer based on their name and date of birth.
+     *
+     * @param name the customer's name.
+     * @param dob  the customer's date of birth.
+     * @return the generated unique key.
+     */
     private String generateKey(String name, LocalDate dob) {
         return name.toLowerCase() + "|" + dob.toString();
     }
 
+    /**
+     * Adds a customer to the registry if they don't already exist.
+     *
+     * @param customer the customer to add.
+     * @return the existing or newly added customer.
+     */
     public Customer addCustomer(Customer customer) {
         String key = generateKey(customer.getName(), customer.getDateOfBirth());
         return customerRegistry.computeIfAbsent(key, k -> customer);
     }
 
+    /**
+     * Retrieves a customer based on their name and date of birth.
+     *
+     * @param name the customer's name.
+     * @param dob  the customer's date of birth.
+     * @return the customer if found, or {@code null} otherwise.
+     */
     public Customer getCustomer(String name, LocalDate dob) {
         String key = generateKey(name, dob);
         return customerRegistry.get(key);
@@ -35,8 +60,8 @@ public class CustomerManager {
     /**
      * Retrieves all customers with the given name (case-insensitive).
      *
-     * @param name Customer name to search for.
-     * @return A list of matching customers.
+     * @param name the name to search for.
+     * @return a list of customers with the given name.
      */
     public List<Customer> getCustomersByName(String name) {
         return customerRegistry.values().stream()
@@ -45,11 +70,11 @@ public class CustomerManager {
     }
 
     /**
-     * Retrieves an existing customer with the given name or adds a new customer if none exists.
+     * Retrieves an existing customer or adds a new customer if none exists.
      *
-     * @param name Customer name to search for.
-     * @param dob  Customer date of birth.
-     * @return The existing or newly added customer.
+     * @param name the customer's name.
+     * @param dob  the customer's date of birth.
+     * @return the existing or newly added customer.
      */
     public Customer getCustomerOrAdd(String name, LocalDate dob) {
         Customer existingCustomer = getCustomer(name, dob);
@@ -60,10 +85,18 @@ public class CustomerManager {
         return addCustomer(newCustomer);
     }
 
+    /**
+     * Retrieves a list of all registered customers.
+     *
+     * @return a list of all customers.
+     */
     public List<Customer> getCustomerList() {
         return customerRegistry.values().stream().collect(Collectors.toList());
     }
 
+    /**
+     * Displays all registered customers in a formatted table.
+     */
     public void displayAllCustomers() {
         List<Customer> customers = getCustomerList();
 

@@ -1,5 +1,9 @@
 package org.dip.tus.menu;
 
+
+/**
+ * Utility class used for aesthetic terminal colour display
+ */
 public enum ConsoleColour {
 
     //Reset

@@ -7,11 +7,24 @@ import org.dip.tus.menu.ConsoleColour;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents a booking for a room in the hotel.
+ */
 public final class RoomBooking extends AbstractBooking {
 
     private Room room;
     private double cost;
 
+    /**
+     * Constructs a RoomBooking object.
+     *
+     * @param customer       the customer making the booking.
+     * @param room           the room being booked.
+     * @param startDateTime  the start date and time of the booking.
+     * @param endDateTime    the end date and time of the booking.
+     * @param cost           the total cost of the booking.
+     * @throws BookingDateArgumentException if the start date and time is after or equal to the end date and time.
+     */
     public RoomBooking(Customer customer, Room room, LocalDateTime startDateTime, LocalDateTime endDateTime, double cost) throws BookingDateArgumentException {
         super(customer, startDateTime, endDateTime);
         this.room = room;
@@ -30,6 +43,11 @@ public final class RoomBooking extends AbstractBooking {
         return room.getRoomNumber();
     }
 
+    /**
+     * Generates a unique booking ID for the room booking.
+     *
+     * @return a string representing the unique booking ID.
+     */
     @Override
     public String generateBookingID() {
         return new StringBuilder()
@@ -56,7 +74,4 @@ public final class RoomBooking extends AbstractBooking {
                 getCost()
         );
     }
-
-
-
 }

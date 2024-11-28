@@ -66,4 +66,20 @@ public class InputHelper {
         }
         return dateTime;
     }
+
+    public static LocalDate parseDateOfBirth(String prompt) {
+        LocalDate date = null;
+        while (date == null || date.isAfter(LocalDate.now())) {
+            System.out.print(prompt);
+            try {
+                date = LocalDate.parse(scanner.nextLine());
+                if(date.isAfter(LocalDate.now())) {
+                    System.out.println("Date of Birth cannot be in the future");
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+            }
+        }
+        return date;
+    }
 }

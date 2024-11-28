@@ -13,11 +13,16 @@ import org.dip.tus.util.InputHelper;
 
 import java.util.Scanner;
 
-
+/**
+ * Class handling the display and navigation of the application's main menu.
+ * It provides submenus for managing room, restaurant, and parking reservations,
+ * as well as generating reports and viewing customer information.
+ */
 public class Menu {
 
+    // Managers and Services
     private static final RoomManager roomManager = RoomManager.getInstance();
-    private static final RestaurantManager restaurantManager = RestaurantManager.getInstance() ;
+    private static final RestaurantManager restaurantManager = RestaurantManager.getInstance();
     private static final ParkingLotManager parkingLotManager = ParkingLotManager.getInstance();
     private static final CustomerManager customerManager = CustomerManager.getInstance();
     private static final RoomService roomService = RoomService.getInstance();
@@ -25,6 +30,9 @@ public class Menu {
     private static final ParkingService parkingService = ParkingService.getInstance();
     private static final ReportService reportService = ReportService.getInstance();
 
+    /**
+     * Displays the main menu and handles user input for navigating the application.
+     */
     public static void displayMenu() {
         boolean menuLoop = true;
 
@@ -49,6 +57,9 @@ public class Menu {
         }
     }
 
+    /**
+     * Displays the main menu header.
+     */
     private static void displayHeader() {
         System.out.println(ConsoleColour.RED);
         System.out.println("***************************************************");
@@ -57,6 +68,9 @@ public class Menu {
         System.out.println(ConsoleColour.WHITE_BOLD_BRIGHT);
     }
 
+    /**
+     * Displays the main menu options.
+     */
     private static void displayOptions() {
         System.out.println("1) Room Reservations");
         System.out.println("2) Restaurant Reservations");
@@ -66,6 +80,10 @@ public class Menu {
         System.out.println("6) Quit");
         System.out.print("Select an option [1-6]: ");
     }
+
+    /**
+     * Displays the report submenu and handles user input for generating various reports.
+     */
     private static void displayReportMenu() {
         boolean reportMenuLoop = true;
         while (reportMenuLoop) {
@@ -83,7 +101,12 @@ public class Menu {
 
             switch (reportChoice) {
                 case 1 -> reportService.generateCustomerBookingReport(customerManager.getCustomerList().toArray(new Customer[0]));
-                case 2 -> reportService.generateCustomerBookingReport(customerManager.getCustomer(InputHelper.parseString("Enter customer name: "), InputHelper.parseDate("Enter customer date of birth: ")));
+                case 2 -> reportService.generateCustomerBookingReport(
+                        customerManager.getCustomer(
+                                InputHelper.parseString("Enter customer name: "),
+                                InputHelper.parseDateOfBirth("Enter customer date of birth: ")
+                        )
+                );
                 case 3 -> reportService.generateBookingSummaryReport();
                 case 4 -> reportService.generateFinancialReport();
                 case 5 -> reportMenuLoop = false;
@@ -91,6 +114,13 @@ public class Menu {
             }
         }
     }
+
+    /**
+     * Displays a submenu for the given reservation type (e.g., Room, Table, Parking).
+     *
+     * @param keyWord A string representing the reservation type.
+     * @param handler A functional interface to handle specific submenu operations.
+     */
     private static void displaySubMenu(String keyWord, SubMenuHandler handler) {
         boolean menuLoop = true;
         while (menuLoop) {
@@ -112,6 +142,11 @@ public class Menu {
         }
     }
 
+    /**
+     * Prompts the user for input and parses it as an integer.
+     *
+     * @return The integer entered by the user, or -1 if the input is invalid.
+     */
     private static int getInput() {
         Scanner scanner = new Scanner(System.in);
         try {
@@ -122,20 +157,41 @@ public class Menu {
         }
     }
 
+    /**
+     * Displays all rooms.
+     */
     private static void viewAllRooms() {
         roomManager.displayAvailableRooms(roomManager.getAllEntities());
     }
 
-    private static void viewAllRestaurantTables() {restaurantManager.displayAvailableTables(restaurantManager.getAllEntities());}
+    /**
+     * Displays all restaurant tables.
+     */
+    private static void viewAllRestaurantTables() {
+        restaurantManager.displayAvailableTables(restaurantManager.getAllEntities());
+    }
 
-    private static void viewAllParkingSpots() {parkingLotManager.displayAvailableParkingSpots(parkingLotManager.getAllEntities());}
+    /**
+     * Displays all parking spots.
+     */
+    private static void viewAllParkingSpots() {
+        parkingLotManager.displayAvailableParkingSpots(parkingLotManager.getAllEntities());
+    }
 
+    /**
+     * Displays all registered customers.
+     */
     private static void viewAllCustomers() {
         customerManager.displayAllCustomers();
     }
 
+    // Functional Interfaces
 
-    //Functional Interfaces
+    /**
+     * Handles the Room submenu operations.
+     *
+     * @return Realisation of a SubMenuHandler functional interface to process Room submenu choices.
+     */
     private static SubMenuHandler roomSubMenuHandler() {
         return choice -> {
             switch (choice) {
@@ -147,6 +203,11 @@ public class Menu {
         };
     }
 
+    /**
+     * Handles the Restaurant submenu operations.
+     *
+     * @return Realisation of a SubMenuHandler functional interface to process table submenu choices.
+     */
     private static SubMenuHandler restaurantSubMenuHandler() {
         return choice -> {
             switch (choice) {
@@ -158,6 +219,11 @@ public class Menu {
         };
     }
 
+    /**
+     * Handles the Parking submenu operations.
+     *
+     * @return Realisation of a SubMenuHandler functional interface to process parking submenu choices.
+     */
     private static SubMenuHandler parkingSubMenuHandler() {
         return choice -> {
             switch (choice) {
@@ -168,5 +234,4 @@ public class Menu {
             }
         };
     }
-
 }

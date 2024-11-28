@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * singleton Service class for handling restaurant-related operations, including reservations and cancellations.
+ */
 public final class RestaurantService implements BookingDisplay<RestaurantBooking> {
 
     private final RestaurantManager restaurantManager = RestaurantManager.getInstance();
@@ -28,13 +31,17 @@ public final class RestaurantService implements BookingDisplay<RestaurantBooking
         return instance;
     }
 
+    /**
+     * Handles the process of reserving a table for a customer in the restaurant.
+     * Includes input validation for customer details, reservation timing, and table selection.
+     */
     public void handleRestaurantReservation() {
         String customerName = "";
         while (customerName.isBlank()) {
             customerName = InputHelper.parseString("Enter customer name: ");
             if (customerName.isBlank()) System.out.println("Name cannot be blank!");
         }
-        LocalDate dob = InputHelper.parseDate("Enter customer date of birth (YYYY-MM-DD): ");
+        LocalDate dob = InputHelper.parseDateOfBirth("Enter customer date of birth (YYYY-MM-DD): ");
 
         int numberOfPeople = InputHelper.parseInt("Enter the number of people for the reservation: ");
 
@@ -52,7 +59,6 @@ public final class RestaurantService implements BookingDisplay<RestaurantBooking
                 System.out.println("Restaurant Reservation must be between 1 to 3 hours long.");
         } while (duration < 1 || duration > 3);
         LocalDateTime endTime = startTime.plusHours(duration);
-
 
         Customer customer = customerManager.getCustomerOrAdd(customerName, dob);
 
@@ -86,6 +92,11 @@ public final class RestaurantService implements BookingDisplay<RestaurantBooking
         }
     }
 
+    /**
+     * Retrieves all restaurant bookings.
+     *
+     * @return A list of all restaurant bookings.
+     */
     public List<RestaurantBooking> getAllBookings() {
         return restaurantManager.getAllEntities()
                 .stream()
@@ -93,6 +104,10 @@ public final class RestaurantService implements BookingDisplay<RestaurantBooking
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Handles the process of removing a restaurant reservation.
+     * Prompts the user for customer details and allows selection of the reservation to be removed.
+     */
     public void removeRestaurantReservation() {
         String customerName;
         do {
@@ -107,7 +122,7 @@ public final class RestaurantService implements BookingDisplay<RestaurantBooking
             }
         } while (customerName.isBlank());
 
-        LocalDate dob = InputHelper.parseDate("Enter customer date of birth (YYYY-MM-DD): ");
+        LocalDate dob = InputHelper.parseDateOfBirth("Enter customer date of birth (YYYY-MM-DD): ");
 
         Customer customer = customerManager.getCustomer(customerName, dob);
         List<RestaurantBooking> customerBookings = restaurantManager.getAllBookingsForCustomer(customer);
